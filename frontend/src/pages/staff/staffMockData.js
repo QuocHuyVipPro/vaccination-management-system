@@ -1,0 +1,25 @@
+﻿export const initialAppointments = [
+  { id: 'LH20261008001', patientName: 'Nguyễn Minh Anh', dateOfBirth: '12/03/2015', phone: '0901234567', vaccine: 'HPV Gardasil 9', dose: 'Mũi 2', date: '08/10/2026', time: '09:30', status: 'confirmed', createdAt: '02/10/2026', note: '' },
+  { id: 'LH20261004002', patientName: 'Nguyễn Văn An', dateOfBirth: '15/06/2005', phone: '0901234567', vaccine: 'Vaxigrip Tetra', dose: 'Mũi 1', date: '04/10/2026', time: '09:30', status: 'confirmed', createdAt: '01/10/2026', note: 'Tiêm phòng cúm mùa' },
+  { id: 'LH20261004003', patientName: 'Lê Hoàng Nam', dateOfBirth: '20/07/2000', phone: '0912345678', vaccine: 'Prevenar 13', dose: 'Mũi 1', date: '04/10/2026', time: '10:00', status: 'pending', createdAt: '03/10/2026', note: '' },
+  { id: 'LH20261004004', patientName: 'Trần Ngọc Mai', dateOfBirth: '18/02/2004', phone: '0923456789', vaccine: 'Varivax', dose: 'Mũi 2', date: '04/10/2026', time: '10:30', status: 'confirmed', createdAt: '02/10/2026', note: '' },
+  { id: 'LH20261005005', patientName: 'Phạm Thu Hà', dateOfBirth: '09/11/1998', phone: '0934567890', vaccine: 'Vaxigrip Tetra', dose: 'Mũi 1', date: '05/10/2026', time: '08:30', status: 'pending', createdAt: '03/10/2026', note: '' },
+  { id: 'LH20261005006', patientName: 'Đỗ Minh Khang', dateOfBirth: '21/05/2014', phone: '0945678901', vaccine: 'Prevenar 13', dose: 'Mũi 1', date: '05/10/2026', time: '09:00', status: 'confirmed', createdAt: '02/10/2026', note: 'Đi cùng người giám hộ' },
+  { id: 'LH20261006007', patientName: 'Võ Thanh Hương', dateOfBirth: '16/08/2002', phone: '0956789012', vaccine: 'HPV Gardasil 9', dose: 'Mũi 1', date: '06/10/2026', time: '14:00', status: 'pending', createdAt: '04/10/2026', note: '' },
+  { id: 'LH20261006008', patientName: 'Bùi Gia Bảo', dateOfBirth: '07/09/2012', phone: '0967890123', vaccine: 'Varivax', dose: 'Mũi 1', date: '06/10/2026', time: '15:00', status: 'confirmed', createdAt: '03/10/2026', note: '' },
+  { id: 'LH20261007009', patientName: 'Nguyễn Hoài An', dateOfBirth: '10/01/1999', phone: '0978901234', vaccine: 'Vaxigrip Tetra', dose: 'Mũi 1', date: '07/10/2026', time: '08:00', status: 'pending', createdAt: '04/10/2026', note: '' },
+  { id: 'LH20261008010', patientName: 'Lê Minh Quân', dateOfBirth: '23/12/1995', phone: '0989012345', vaccine: 'Prevenar 13', dose: 'Mũi 1', date: '08/10/2026', time: '10:00', status: 'confirmed', createdAt: '03/10/2026', note: '' },
+  { id: 'LH20260930011', patientName: 'Phạm Thu Hà', dateOfBirth: '09/11/1998', phone: '0934567890', vaccine: 'Varivax', dose: 'Mũi 1', date: '30/09/2026', time: '08:50', status: 'completed', createdAt: '25/09/2026', note: '' },
+  { id: 'LH20260929012', patientName: 'Nguyễn Văn An', dateOfBirth: '15/06/2005', phone: '0901234567', vaccine: 'Prevenar 13', dose: 'Mũi 1', date: '29/09/2026', time: '09:00', status: 'completed', createdAt: '24/09/2026', note: '' },
+];
+
+export const initialPatients = [
+  { id: 1, fullName: 'Nguyễn Văn An', dateOfBirth: '15/06/2005', gender: 'Nam', phone: '0901234567', address: 'Bình Dương', guardian: '', relationship: 'Bản thân', allergies: 'Không ghi nhận', healthNotes: 'Không có ghi chú đặc biệt', vaccinationCount: 3, upcomingAppointment: '12/10/2026' },
+  { id: 2, fullName: 'Nguyễn Minh Anh', dateOfBirth: '12/03/2015', gender: 'Nữ', phone: '0901234567', address: 'Bình Dương', guardian: 'Nguyễn Văn An', relationship: 'Em', allergies: 'Không ghi nhận', healthNotes: 'Không có ghi chú đặc biệt', vaccinationCount: 2, upcomingAppointment: '08/10/2026' },
+  { id: 3, fullName: 'Lê Hoàng Nam', dateOfBirth: '20/11/2000', gender: 'Nam', phone: '0912345678', address: 'TP. Hồ Chí Minh', guardian: '', relationship: 'Bản thân', allergies: 'Không ghi nhận', healthNotes: '', vaccinationCount: 1, upcomingAppointment: null },
+  { id: 4, fullName: 'Trần Ngọc Mai', dateOfBirth: '18/02/2004', gender: 'Nữ', phone: '0923456789', address: 'Đồng Nai', guardian: '', relationship: 'Bản thân', allergies: 'Dị ứng hải sản', healthNotes: 'Đã khai báo tiền sử dị ứng', vaccinationCount: 2, upcomingAppointment: '15/10/2026' },
+  { id: 5, fullName: 'Phạm Thu Hà', dateOfBirth: '09/11/1998', gender: 'Nữ', phone: '0934567890', address: 'TP. Hồ Chí Minh', guardian: '', relationship: 'Bản thân', allergies: 'Không ghi nhận', healthNotes: '', vaccinationCount: 4, upcomingAppointment: null },
+  { id: 6, fullName: 'Đỗ Minh Khang', dateOfBirth: '21/05/2014', gender: 'Nam', phone: '0945678901', address: 'Bình Dương', guardian: 'Đỗ Văn Minh', relationship: 'Con', allergies: 'Không ghi nhận', healthNotes: 'Đi cùng người giám hộ', vaccinationCount: 2, upcomingAppointment: null },
+  { id: 7, fullName: 'Võ Thanh Hương', dateOfBirth: '16/08/2002', gender: 'Nữ', phone: '0956789012', address: 'Đồng Nai', guardian: '', relationship: 'Bản thân', allergies: 'Không ghi nhận', healthNotes: '', vaccinationCount: 0, upcomingAppointment: null },
+  { id: 8, fullName: 'Bùi Gia Bảo', dateOfBirth: '07/09/2012', gender: 'Nam', phone: '0967890123', address: 'TP. Hồ Chí Minh', guardian: 'Bùi Thanh Sơn', relationship: 'Con', allergies: 'Không ghi nhận', healthNotes: '', vaccinationCount: 0, upcomingAppointment: null },
+];

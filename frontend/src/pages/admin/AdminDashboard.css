@@ -1,0 +1,34 @@
+/* Reuse the existing dashboard shell; additions are scoped to Admin. */
+.admin-dashboard .ad-inventory { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.admin-dashboard .ad-inventory > div { padding: 18px 14px; background: #f7f9fc; border: 1px solid var(--cd-border); border-radius: 10px; }
+.admin-dashboard .ad-inventory dt { color: var(--cd-muted); font-size: 12px; }
+.admin-dashboard .ad-inventory dd { display: flex; align-items: baseline; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.admin-dashboard .ad-inventory strong { font-size: 28px; font-weight: 700; }
+.admin-dashboard .ad-inventory dd span { font-size: 11px; color: var(--cd-muted); }
+.admin-dashboard .ad-alerts, .admin-dashboard .ad-activities { list-style: none; padding: 0; }
+.admin-dashboard .ad-alerts li { display: flex; align-items: flex-start; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--cd-border); }
+.admin-dashboard .ad-alerts li:first-child { padding-top: 0; }
+.admin-dashboard .ad-alerts li:last-child { padding-bottom: 0; border-bottom: 0; }
+.admin-dashboard .ad-alert-icon { color: #7b8797; padding-top: 2px; }
+.admin-dashboard .ad-alerts h3 { font-size: 13px; font-weight: 600; }
+.admin-dashboard .ad-alerts p { font-size: 12px; color: var(--cd-muted); margin-top: 5px; }
+.admin-dashboard .ad-badge { display: inline-block; font-size: 10px; padding: 4px 8px; border-radius: 5px; margin-top: 9px; }
+.admin-dashboard .ad-expiry { background: #faf3e5; color: #896c37; }
+.admin-dashboard .ad-stock { background: #f0f2f5; color: #627084; }
+.admin-dashboard .ad-pending { background: #edf3fb; color: #37659b; }
+.admin-dashboard .ad-alert-panel:focus { outline: 2px solid #74a9eb; outline-offset: 3px; }
+.admin-dashboard .ad-activities { display: grid; gap: 24px; }
+.admin-dashboard .ad-activities li { display: grid; grid-template-columns: 40px 30px minmax(0, 1fr); gap: 12px; align-items: start; }
+.admin-dashboard .ad-activities time { font-size: 11px; color: var(--cd-muted); padding-top: 6px; }
+.admin-dashboard .ad-activity-icon { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: #edf3fb; color: var(--cd-blue); position: relative; }
+.admin-dashboard .ad-activity-icon .cd-icon { width: 16px; height: 16px; }
+.admin-dashboard .ad-activities li:not(:last-child) .ad-activity-icon::after { content: ''; position: absolute; top: 36px; left: 14px; height: 20px; width: 1px; background: var(--cd-border); }
+.admin-dashboard .ad-activities strong { font-size: 13px; font-weight: 600; }
+.admin-dashboard .ad-activities p { font-size: 12px; color: var(--cd-muted); margin-top: 4px; overflow-wrap: anywhere; }
+@media (max-width: 768px) {
+  .admin-dashboard .ad-inventory { grid-template-columns: minmax(0, 1fr); }
+  .admin-dashboard .ad-inventory > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .admin-dashboard .ad-inventory dd { margin-top: 0; }
+  .admin-dashboard .ad-activities li { gap: 8px; }
+  .admin-dashboard .ad-inventory-link { min-height: 44px; }
+}

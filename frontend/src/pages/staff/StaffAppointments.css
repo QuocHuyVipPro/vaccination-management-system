@@ -1,0 +1,64 @@
+.staff-appointments .sa-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.staff-appointments .sa-tabs button { padding: 9px 14px; background: #f3f6fa; color: var(--cd-muted); border: 1px solid transparent; border-radius: 8px; font-size: 13px; }
+.staff-appointments .sa-tabs .sa-tab-active { background: var(--cd-blue); color: white; }
+.staff-appointments .sa-tabs button:hover { border-color: #9bbce6; }
+.staff-appointments .sa-filter-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr); gap: 20px; }
+.staff-appointments .sa-filter-grid label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 7px; }
+.staff-appointments .sa-filter-grid input { width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; border: 1px solid var(--cd-border); border-radius: 8px; font: inherit; background: white; color: var(--cd-navy); }
+.staff-appointments .sa-filter-grid input:focus { outline: none; border-color: var(--cd-blue); box-shadow: 0 0 0 3px #1a5fb41a; }
+.staff-appointments .sa-date-controls { display: flex; gap: 8px; }
+.staff-appointments .sa-date-controls button { flex-shrink: 0; }
+.staff-appointments .sa-count { margin: 18px 0 12px; color: var(--cd-muted); font-size: 12px; }
+.staff-appointments .sa-table-card { background: white; border: 1px solid var(--cd-border); border-radius: 14px; overflow: hidden; box-shadow: 0 3px 12px #0d2b5503; }
+.staff-appointments .sa-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; }
+.staff-appointments .sa-table caption { text-align: left; padding: 18px; font-size: 16px; font-weight: 700; }
+.staff-appointments .sa-table th { text-align: left; background: #f7f9fc; font-size: 11px; color: var(--cd-muted); font-weight: 600; }
+.staff-appointments .sa-table :is(th, td) { padding: 16px 12px; border-top: 1px solid var(--cd-border); overflow-wrap: anywhere; vertical-align: top; }
+.staff-appointments .sa-table th:nth-child(2), .staff-appointments .sa-table th:nth-child(3) { width: 18%; }
+.staff-appointments .sa-table th:nth-child(5) { width: 7%; }
+.staff-appointments .sa-table th:nth-child(7) { width: 16%; }
+.staff-appointments .sa-table small { display: block; margin-top: 5px; color: var(--cd-muted); font-size: 11px; }
+.staff-appointments .sa-table strong { font-weight: 600; }
+.staff-appointments .sa-id { font-size: 11px; }
+.staff-appointments .sa-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.staff-appointments .sa-actions .cd-button { font-size: 11px; padding: 7px 9px; }
+.staff-appointments .sa-badge { display: inline-block; padding: 5px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
+.staff-appointments .sa-pending { background: #fff4de; color: #8a5a12; }
+.staff-appointments .sa-confirmed { background: #eaf3ff; color: #1a5fb4; }
+.staff-appointments .sa-completed { background: #eaf6ee; color: #26714c; }
+.staff-appointments .sa-cancelled { background: #f8eded; color: #97504f; }
+.staff-appointments .sa-empty { padding: 44px 24px; text-align: center; }
+.staff-appointments .sa-empty .cd-icon-box { margin: 0 auto 18px; }
+.staff-appointments .sa-empty h2 { font-size: 20px; font-weight: 700; }
+.staff-appointments .sa-modal { width: 650px; max-width: calc(100% - 32px); max-height: calc(100dvh - 40px); overflow-y: auto; margin: auto; padding: 0; border: 1px solid var(--cd-border); border-radius: 14px; background: white; color: var(--cd-navy); font: inherit; box-shadow: 0 20px 64px #0d2b5529; }
+.staff-appointments .sa-modal::backdrop { background: #081c3a66; }
+.staff-appointments .sa-modal header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--cd-border); }
+.staff-appointments .sa-modal h2 { font-size: 19px; font-weight: 700; line-height: 1.4; }
+.staff-appointments .sa-close { width: 34px; height: 34px; border: 0; border-radius: 8px; background: #f3f6fa; color: var(--cd-muted); font-size: 22px; }
+.staff-appointments .sa-modal-body { padding: 24px; }
+.staff-appointments .sa-question { margin-bottom: 20px; }
+.staff-appointments .sa-modal-body section + section { border-top: 1px solid var(--cd-border); margin-top: 20px; padding-top: 20px; }
+.staff-appointments .sa-modal h3 { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+.staff-appointments .sa-modal dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.staff-appointments .sa-modal dt { color: var(--cd-muted); font-size: 12px; margin-bottom: 4px; }
+.staff-appointments .sa-modal dd { overflow-wrap: anywhere; white-space: pre-wrap; }
+.staff-appointments .sa-modal footer { padding: 18px 24px; display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--cd-border); }
+@media (max-width: 1100px) {
+  .staff-appointments .sa-filter-grid { grid-template-columns: minmax(0, 1fr); }
+  .staff-appointments .sa-table { font-size: 11px; }
+  .staff-appointments .sa-table :is(th, td) { padding: 12px 8px; }
+}
+@media (max-width: 768px) {
+  .staff-appointments .sa-table-card { background: none; border: none; box-shadow: none; overflow: visible; }
+  .staff-appointments .sa-table, .staff-appointments .sa-table tbody { display: block; width: 100%; }
+  .staff-appointments .sa-table caption { display: block; padding: 0 0 14px; }
+  .staff-appointments .sa-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .staff-appointments .sa-table tr { display: block; margin-bottom: 16px; padding: 16px; background: white; border: 1px solid var(--cd-border); border-radius: 12px; }
+  .staff-appointments .sa-table td { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 8px; padding: 8px 0; border: 0; font-size: 12px; }
+  .staff-appointments .sa-table td::before { content: attr(data-label); color: var(--cd-muted); font-size: 11px; }
+  .staff-appointments .sa-table td small { grid-column: 2; margin: 0; }
+  .staff-appointments .sa-actions { flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .staff-appointments .sa-actions button { min-height: 40px; }
+  .staff-appointments .sa-filter-grid input { font-size: 16px; }
+  .staff-appointments .sa-modal dl { grid-template-columns: minmax(0, 1fr); }
+}

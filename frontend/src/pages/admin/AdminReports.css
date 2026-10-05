@@ -1,0 +1,70 @@
+.admin-reports .ar-filters { display: grid; grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(0, 1fr)) auto; gap: 16px; align-items: end; }
+.admin-reports .ar-filters label { display: block; margin-bottom: 7px; color: var(--cd-muted); font-size: 12px; font-weight: 600; }
+.admin-reports .ar-filters :is(input, select) { width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; border: 1px solid var(--cd-border); border-radius: 8px; background: white; color: var(--cd-navy); font: inherit; }
+.admin-reports .ar-filters :is(input, select):focus-visible { outline: 2px solid var(--cd-blue); outline-offset: 2px; }
+.admin-reports .ar-filters [aria-invalid=true] { border-color: #a95d5d; }
+.admin-reports .ar-filter-actions { display: flex; gap: 8px; }
+.admin-reports .ar-filter-actions button { min-height: 44px; white-space: nowrap; }
+.admin-reports .ar-error { grid-column: 1 / -1; color: #a54f50; font-size: 12px; }
+.admin-reports .ar-period { margin: 14px 0 18px; color: var(--cd-muted); font-size: 12px; }
+.admin-reports .cd-stat-value { overflow-wrap: anywhere; }
+.admin-reports .ar-report-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-bottom: 24px; }
+.admin-reports .ar-monthly { grid-column: 1 / -1; }
+.admin-reports .ar-bar-chart { display: flex; align-items: stretch; gap: clamp(10px, 3vw, 34px); min-height: 290px; padding: 20px 16px 0; border-bottom: 1px solid var(--cd-border); }
+.admin-reports .ar-bar-column { display: grid; grid-template-rows: 24px 220px 28px; flex: 1; min-width: 0; text-align: center; }
+.admin-reports .ar-bar-column > strong { font-size: 12px; color: #506681; }
+.admin-reports .ar-bar-space { display: flex; align-items: flex-end; justify-content: center; height: 220px; }
+.admin-reports .ar-bar-space span { width: min(58px, 68%); min-height: 3px; border-radius: 7px 7px 0 0; background: var(--cd-blue); }
+.admin-reports .ar-bar-column small { padding-top: 8px; color: var(--cd-muted); font-size: 11px; }
+.admin-reports .ar-progress-list { display: grid; gap: 17px; }
+.admin-reports .ar-progress-row > div:first-child { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 7px; font-size: 12px; }
+.admin-reports .ar-progress-row strong { color: var(--cd-navy); }
+.admin-reports .ar-track { height: 8px; overflow: hidden; border-radius: 999px; background: #edf1f6; }
+.admin-reports .ar-track > span { display: block; height: 100%; min-width: 2px; border-radius: inherit; background: var(--cd-blue); }
+.admin-reports .ar-ranking { display: grid; gap: 16px; padding: 0; list-style: none; }
+.admin-reports .ar-ranking li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; align-items: center; }
+.admin-reports .ar-ranking li > span { display: grid; place-items: center; width: 27px; height: 27px; border-radius: 50%; background: #edf3fb; color: var(--cd-blue); font-size: 11px; font-weight: 700; }
+.admin-reports .ar-ranking li > div > div:first-child { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 7px; }
+.admin-reports .ar-ranking strong, .admin-reports .ar-ranking b { font-size: 12px; }
+.admin-reports .ar-ranking b { color: var(--cd-muted); white-space: nowrap; }
+.admin-reports .ar-user-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.admin-reports .ar-user-stats > div { padding: 16px; border: 1px solid var(--cd-border); border-radius: 9px; background: #f7f9fc; }
+.admin-reports .ar-user-stats dt { color: var(--cd-muted); font-size: 12px; }
+.admin-reports .ar-user-stats dd { margin-top: 6px; font-size: 23px; font-weight: 700; }
+.admin-reports .ar-stock-list { display: grid; gap: 14px; padding: 0; list-style: none; }
+.admin-reports .ar-stock-list li { display: flex; gap: 14px; align-items: center; padding: 12px; border-radius: 9px; background: #f7f9fc; }
+.admin-reports .ar-stock-list li > strong { width: 42px; flex-shrink: 0; color: #6f6077; text-align: center; }
+.admin-reports .ar-stock-list .ar-positive { color: #26714c; }
+.admin-reports .ar-stock-list b, .admin-reports .ar-stock-list span { display: block; font-size: 12px; }
+.admin-reports .ar-stock-list span { margin-top: 3px; color: var(--cd-muted); overflow-wrap: anywhere; }
+.admin-reports .ar-recent { margin-top: 24px; }
+.admin-reports .ar-table-card { overflow: hidden; border: 1px solid var(--cd-border); border-radius: 10px; }
+.admin-reports .ar-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 12px; }
+.admin-reports .ar-table caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.admin-reports .ar-table :is(th, td) { padding: 14px 12px; border-bottom: 1px solid var(--cd-border); text-align: left; overflow-wrap: anywhere; }
+.admin-reports .ar-table th { background: #f7f9fc; color: var(--cd-muted); font-size: 11px; }
+.admin-reports .ar-table tr:last-child td { border-bottom: 0; }
+.admin-reports .ar-empty { padding: 34px 12px; text-align: center; color: var(--cd-muted); }
+.admin-reports .ar-empty h3 { color: var(--cd-muted); font-size: 14px; font-weight: 600; }
+@media (max-width: 1100px) {
+  .admin-reports .ar-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .admin-reports .ar-report-grid { gap: 18px; }
+}
+@media (max-width: 768px) {
+  .admin-reports .ar-filters, .admin-reports .ar-report-grid { grid-template-columns: minmax(0, 1fr); }
+  .admin-reports .ar-filters :is(input, select) { font-size: 16px; }
+  .admin-reports .ar-filter-actions button { flex: 1; }
+  .admin-reports .ar-monthly { grid-column: auto; }
+  .admin-reports .ar-bar-chart { gap: 5px; min-height: 230px; padding-inline: 0; }
+  .admin-reports .ar-bar-column { grid-template-rows: 24px 165px 28px; }
+  .admin-reports .ar-bar-space { height: 165px; }
+  .admin-reports .ar-bar-column > strong, .admin-reports .ar-bar-column small { font-size: 10px; }
+  .admin-reports .ar-user-stats { grid-template-columns: minmax(0, 1fr); }
+  .admin-reports .ar-inventory-link { min-height: 44px; }
+  .admin-reports .ar-table-card { border: 0; overflow: visible; }
+  .admin-reports .ar-table, .admin-reports .ar-table tbody { display: block; }
+  .admin-reports .ar-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .admin-reports .ar-table tr { display: block; padding: 14px; margin-bottom: 14px; border: 1px solid var(--cd-border); border-radius: 10px; }
+  .admin-reports .ar-table td { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 8px; padding: 7px 0; border: 0; }
+  .admin-reports .ar-table td::before { content: attr(data-label); color: var(--cd-muted); font-size: 11px; }
+}

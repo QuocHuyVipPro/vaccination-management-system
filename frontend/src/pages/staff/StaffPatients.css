@@ -1,0 +1,62 @@
+.staff-patients .sp-statistics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.staff-patients .sp-filters { display: grid; grid-template-columns: minmax(0, 1fr) 180px; gap: 20px; }
+.staff-patients .sp-filters label { display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; }
+.staff-patients .sp-search-box { position: relative; }
+.staff-patients .sp-search-box .cd-icon { position: absolute; left: 15px; top: 15px; color: var(--cd-muted); pointer-events: none; }
+.staff-patients .sp-filters :is(input, select) { width: 100%; min-width: 0; min-height: 50px; padding: 12px; border: 1px solid var(--cd-border); border-radius: 9px; background: white; color: var(--cd-navy); font: inherit; }
+.staff-patients .sp-search-box input { padding-left: 45px; }
+.staff-patients .sp-filters :is(input, select):focus-visible { outline: 2px solid var(--cd-blue); outline-offset: 2px; }
+.staff-patients .sp-count { margin: 18px 0 12px; font-size: 12px; color: var(--cd-muted); }
+.staff-patients .sp-table-card { background: white; border: 1px solid var(--cd-border); border-radius: 14px; overflow: hidden; }
+.staff-patients .sp-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 12px; }
+.staff-patients .sp-table caption { text-align: left; padding: 18px; font-size: 16px; font-weight: 700; }
+.staff-patients .sp-table :is(th, td) { padding: 16px 12px; border-top: 1px solid var(--cd-border); text-align: left; overflow-wrap: anywhere; }
+.staff-patients .sp-table th { background: #f7f9fc; color: var(--cd-muted); font-size: 11px; font-weight: 600; }
+.staff-patients .sp-table th:first-child { width: 28%; }
+.staff-patients .sp-table th:nth-child(3) { width: 8%; }
+.staff-patients .sp-table th:nth-child(5) { width: 10%; }
+.staff-patients .sp-person { display: flex; align-items: center; gap: 10px; }
+.staff-patients .sp-person .cd-avatar { width: 34px; height: 34px; flex-shrink: 0; font-size: 11px; }
+.staff-patients .sp-person strong { font-weight: 600; }
+.staff-patients .sp-person small { display: block; margin-top: 5px; color: var(--cd-muted); font-size: 10px; line-height: 1.5; }
+.staff-patients .sp-muted { color: var(--cd-muted); }
+.staff-patients .sp-upcoming { color: var(--cd-blue); font-weight: 600; }
+.staff-patients .sp-view { min-height: 36px; text-align: left; }
+.staff-patients .sp-empty { text-align: center; padding: 44px 24px; }
+.staff-patients .sp-empty .cd-icon-box { margin: 0 auto 18px; }
+.staff-patients .sp-empty h2 { font-size: 20px; font-weight: 700; }
+.staff-patients .sp-empty p { color: var(--cd-muted); margin-top: 10px; }
+.staff-patients .sp-modal { width: 720px; max-width: calc(100% - 32px); max-height: calc(100dvh - 32px); overflow-y: auto; margin: auto; padding: 0; border: 1px solid var(--cd-border); border-radius: 14px; background: white; color: var(--cd-navy); font: inherit; box-shadow: 0 20px 64px #0d2b5529; }
+.staff-patients .sp-modal::backdrop { background: #081c3a66; }
+.staff-patients .sp-modal header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--cd-border); }
+.staff-patients .sp-modal h2 { font-size: 19px; font-weight: 700; }
+.staff-patients .sp-close { flex-shrink: 0; width: 36px; height: 36px; border: 0; border-radius: 8px; background: #f3f6fa; color: var(--cd-muted); font-size: 22px; }
+.staff-patients .sp-modal-body { padding: 24px; }
+.staff-patients .sp-modal-body section + section { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--cd-border); }
+.staff-patients .sp-modal h3 { font-size: 13px; font-weight: 700; margin-bottom: 14px; }
+.staff-patients .sp-modal dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.staff-patients .sp-modal dt { color: var(--cd-muted); font-size: 12px; margin-bottom: 5px; }
+.staff-patients .sp-modal dd { overflow-wrap: anywhere; white-space: pre-wrap; }
+.staff-patients .sp-modal footer { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 10px; padding: 18px 24px; border-top: 1px solid var(--cd-border); }
+@media (max-width: 1100px) {
+  .staff-patients .sp-table :is(th, td) { padding: 12px 8px; font-size: 11px; }
+  .staff-patients .sp-person { gap: 6px; }
+}
+@media (max-width: 768px) {
+  .staff-patients .sp-statistics, .staff-patients .sp-filters { grid-template-columns: minmax(0, 1fr); }
+  .staff-patients .sp-filters :is(input, select) { font-size: 16px; }
+  .staff-patients .sp-table-card { background: none; border: none; overflow: visible; }
+  .staff-patients .sp-table, .staff-patients .sp-table tbody { display: block; width: 100%; }
+  .staff-patients .sp-table caption { display: block; padding: 0 0 14px; }
+  .staff-patients .sp-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .staff-patients .sp-table tr { display: block; padding: 16px; margin-bottom: 16px; border: 1px solid var(--cd-border); border-radius: 12px; background: white; }
+  .staff-patients .sp-table td { display: grid; grid-template-columns: 105px minmax(0, 1fr); gap: 8px; padding: 8px 0; border: 0; font-size: 12px; align-items: center; }
+  .staff-patients .sp-table td::before { content: attr(data-label); color: var(--cd-muted); font-size: 11px; }
+  .staff-patients .sp-table td:first-child { display: block; padding-bottom: 16px; margin-bottom: 8px; border-bottom: 1px solid var(--cd-border); }
+  .staff-patients .sp-table td:first-child::before { content: none; }
+  .staff-patients .sp-person { gap: 10px; }
+  .staff-patients .sp-view { min-height: 44px; }
+  .staff-patients .sp-modal dl { grid-template-columns: minmax(0, 1fr); }
+  .staff-patients .sp-modal footer { flex-direction: column; }
+  .staff-patients .sp-modal footer button { width: 100%; min-height: 44px; justify-content: center; }
+}

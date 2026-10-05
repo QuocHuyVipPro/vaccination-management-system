@@ -1,0 +1,44 @@
+/* Base cards, typography and responsive shell reuse CustomerDashboard.css.
+   Staff-only rules never select a Customer page. */
+.staff-dashboard .sd-appointments { list-style: none; padding: 0; }
+.staff-dashboard .sd-appointments > li { display: flex; gap: 18px; padding: 20px 0; border-bottom: 1px solid var(--cd-border); }
+.staff-dashboard .sd-appointments > li:first-child { padding-top: 0; }
+.staff-dashboard .sd-appointments > li:last-child { padding-bottom: 0; border-bottom: 0; }
+.staff-dashboard .sd-time { display: grid; place-items: center; align-self: flex-start; flex-shrink: 0; width: 64px; min-height: 42px; border-radius: 8px; background: #edf3fb; color: var(--cd-blue); font-size: 14px; font-weight: 700; }
+.staff-dashboard .sd-appointment-body { flex: 1; min-width: 0; }
+.staff-dashboard .sd-appointment-body h3 { font-size: 15px; font-weight: 650; }
+.staff-dashboard .sd-appointment-body p { font-size: 12px; color: var(--cd-muted); margin: 4px 0 9px; overflow-wrap: anywhere; }
+.staff-dashboard .sd-pending { background: #fff4de; color: #8a5a12; }
+.staff-dashboard .sd-row-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 10px; }
+.staff-dashboard .sd-row-actions .cd-button { padding: 6px 12px; font-size: 11px; }
+.staff-dashboard .sd-warning { color: #a77927; display: inline-flex; }
+.staff-dashboard .sd-alert-list { display: grid; gap: 12px; }
+.staff-dashboard .sd-alert-list p { display: flex; gap: 14px; align-items: center; padding: 14px; background: #faf8f2; border: 1px solid #eee8d9; border-radius: 9px; color: #6c624f; font-size: 13px; }
+.staff-dashboard .sd-alert-list strong { color: #8a5a12; font-size: 22px; }
+.staff-dashboard .sd-alert-link { margin-top: 18px; }
+.staff-dashboard .sd-activities { list-style: none; padding: 0; display: grid; gap: 20px; }
+.staff-dashboard .sd-activities li { display: flex; align-items: flex-start; gap: 12px; }
+.staff-dashboard .sd-activities time { color: var(--cd-muted); font-size: 11px; padding-top: 3px; }
+.staff-dashboard .sd-activity-icon { display: grid; place-items: center; width: 28px; height: 28px; background: #edf3fb; border-radius: 50%; color: var(--cd-blue); flex-shrink: 0; }
+.staff-dashboard .sd-activity-icon .cd-icon { width: 15px; height: 15px; }
+.staff-dashboard .sd-activities strong { font-size: 12px; font-weight: 600; }
+.staff-dashboard .sd-activities p { font-size: 12px; color: var(--cd-muted); margin-top: 3px; }
+.staff-dashboard .sd-modal { width: 520px; max-width: calc(100% - 32px); max-height: calc(100dvh - 40px); overflow-y: auto; margin: auto; padding: 0; border: 1px solid var(--cd-border); border-radius: 14px; background: white; color: var(--cd-navy); font: inherit; box-shadow: 0 20px 64px #0d2b5529; }
+.staff-dashboard .sd-modal::backdrop { background: #081c3a66; }
+.staff-dashboard .sd-modal header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--cd-border); }
+.staff-dashboard .sd-modal h2 { font-size: 19px; font-weight: 700; line-height: 1.4; }
+.staff-dashboard .sd-close { border: 0; border-radius: 7px; width: 34px; height: 34px; background: #f3f6fa; color: var(--cd-muted); font-size: 22px; }
+.staff-dashboard .sd-modal dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding: 24px; }
+.staff-dashboard .sd-modal dt { color: var(--cd-muted); font-size: 12px; margin-bottom: 5px; }
+.staff-dashboard .sd-modal dd { font-weight: 550; overflow-wrap: anywhere; }
+.staff-dashboard .sd-modal footer { padding: 18px 24px; display: flex; justify-content: flex-end; border-top: 1px solid var(--cd-border); }
+.staff-dashboard .sd-alert-details { display: grid; gap: 16px; padding: 24px; }
+.staff-dashboard .sd-alert-details p { display: flex; gap: 8px; align-items: center; }
+.staff-dashboard .sd-alert-details .cd-icon { color: #a77927; }
+@media (max-width: 768px) {
+  .staff-dashboard .sd-appointments > li { gap: 12px; }
+  .staff-dashboard .sd-time { width: 54px; font-size: 13px; }
+  .staff-dashboard .sd-row-actions { gap: 10px; }
+  .staff-dashboard .sd-row-actions button { min-height: 40px; }
+  .staff-dashboard .sd-modal dl { grid-template-columns: minmax(0, 1fr); }
+}

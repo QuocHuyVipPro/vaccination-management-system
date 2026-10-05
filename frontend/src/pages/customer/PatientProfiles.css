@@ -1,0 +1,55 @@
+.patient-profiles .pp-page-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.patient-profiles .pp-page-heading > .cd-button { flex-shrink: 0; }
+.patient-profiles .pp-summary { display: flex; align-items: center; gap: 18px; margin-bottom: 24px; max-width: 450px; padding: 20px 24px; }
+.patient-profiles .pp-summary h2 { display: flex; align-items: center; gap: 18px; font-size: 14px; font-weight: 550; line-height: 1.5; }
+.patient-profiles .pp-summary strong { font-size: 28px; font-weight: 750; }
+.patient-profiles .pp-summary p { font-size: 12px; color: var(--cd-muted); }
+.patient-profiles .pp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.patient-profiles .pp-card { display: flex; flex-direction: column; }
+.patient-profiles .pp-card-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.patient-profiles .pp-avatar { width: 52px; height: 52px; font-size: 17px; }
+.patient-profiles .pp-card-heading h2 { font-size: 18px; font-weight: 700; line-height: 1.5; margin-bottom: 5px; overflow-wrap: anywhere; }
+.patient-profiles .pp-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; }
+.patient-profiles .pp-details dt { color: var(--cd-muted); font-size: 12px; margin-bottom: 3px; }
+.patient-profiles .pp-details dd { font-size: 14px; font-weight: 550; overflow-wrap: anywhere; white-space: pre-wrap; }
+.patient-profiles .pp-status { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 22px; font-size: 12px; color: var(--cd-muted); }
+.patient-profiles .pp-card-actions { display: flex; gap: 12px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--cd-border); }
+.patient-profiles .pp-empty { text-align: center; padding: 48px 24px; }
+.patient-profiles .pp-empty > .cd-icon-box { margin: 0 auto 16px; }
+.patient-profiles .pp-empty h2 { font-size: 20px; font-weight: 700; }
+.patient-profiles .pp-empty p { margin: 10px 0 20px; color: var(--cd-muted); }
+
+/* Native dialog provides focus containment and makes the background inert. */
+.patient-profiles .pp-modal { width: 650px; max-width: calc(100% - 32px); max-height: calc(100vh - 40px); max-height: calc(100dvh - 40px); margin: auto; padding: 0; overflow-y: auto; border: 1px solid var(--cd-border); border-radius: 14px; background: #fff; color: var(--cd-navy); font: inherit; box-shadow: 0 20px 64px #0d2b5529; }
+.patient-profiles .pp-modal::backdrop { background: rgb(8 28 58 / 40%); }
+.patient-profiles .pp-modal-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--cd-border); }
+.patient-profiles .pp-modal-header h2 { font-size: 19px; font-weight: 700; line-height: 1.4; }
+.patient-profiles .pp-close { display: grid; place-items: center; flex-shrink: 0; width: 36px; height: 36px; border: 0; border-radius: 8px; background: #f3f6fa; color: var(--cd-muted); }
+.patient-profiles .pp-close:hover { background: #e7effa; color: var(--cd-blue); }
+.patient-profiles .pp-modal-body { padding: 24px; }
+.patient-profiles .pp-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.patient-profiles .pp-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.patient-profiles .pp-field-wide { grid-column: 1 / -1; }
+.patient-profiles .pp-field label { font-size: 13px; font-weight: 600; }
+.patient-profiles .pp-field :is(input, select, textarea) { width: 100%; min-width: 0; border: 1px solid var(--cd-border); border-radius: 8px; padding: 10px 12px; font: inherit; color: var(--cd-navy); background: #fff; }
+.patient-profiles .pp-field :is(input, select) { min-height: 44px; }
+.patient-profiles .pp-field textarea { resize: vertical; min-height: 70px; }
+.patient-profiles .pp-field :is(input, select, textarea):focus { outline: none; border-color: var(--cd-blue); box-shadow: 0 0 0 3px rgb(26 95 180 / 10%); }
+.patient-profiles .pp-field [aria-invalid="true"] { border-color: #b42318; }
+.patient-profiles .pp-error { color: #b42318; font-size: 12px; }
+.patient-profiles .pp-modal-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 18px 24px; border-top: 1px solid var(--cd-border); }
+
+@media (max-width: 1100px) {
+  .patient-profiles .pp-page-heading { align-items: flex-start; flex-wrap: wrap; }
+}
+@media (max-width: 768px) {
+  .patient-profiles .pp-grid, .patient-profiles .pp-form-grid { grid-template-columns: minmax(0, 1fr); }
+  .patient-profiles .pp-summary { max-width: none; }
+  .patient-profiles .pp-modal-header, .patient-profiles .pp-modal-body, .patient-profiles .pp-modal-footer { padding: 18px; }
+  .patient-profiles .pp-modal-header h2 { font-size: 17px; }
+  .patient-profiles .pp-field :is(input, select, textarea) { font-size: 16px; }
+}
+@media (max-width: 380px) {
+  .patient-profiles .pp-details { grid-template-columns: minmax(0, 1fr); }
+  .patient-profiles .pp-card-actions { flex-wrap: wrap; }
+}
