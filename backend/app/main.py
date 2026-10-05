@@ -3,8 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 from app.database import engine
+from app.routers.admin_notifications import router as admin_notifications_router
 from app.routers.appointments import router as appointments_router
 from app.routers.auth import router as auth_router
+from app.routers.notifications import router as notifications_router
 from app.routers.profiles import router as profiles_router
 from app.routers.staff_appointments import router as staff_appointments_router
 from app.routers.staff_vaccinations import router as staff_vaccinations_router
@@ -28,6 +30,8 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(admin_notifications_router)
+app.include_router(notifications_router)
 app.include_router(profiles_router)
 app.include_router(vaccines_router)
 app.include_router(appointments_router)

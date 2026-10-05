@@ -22,3 +22,15 @@ except ValueError as exc:
 
 if ACCESS_TOKEN_EXPIRE_MINUTES <= 0:
     raise RuntimeError("ACCESS_TOKEN_EXPIRE_MINUTES phải lớn hơn 0.")
+
+
+# SMTP is optional at application startup and validated only when sending email.
+SMTP_HOST = os.getenv("SMTP_HOST", "").strip()
+SMTP_PORT = os.getenv("SMTP_PORT", "587").strip()
+SMTP_USERNAME = os.getenv("SMTP_USERNAME", "").strip()
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+SMTP_FROM_EMAIL = os.getenv("SMTP_FROM_EMAIL", "").strip()
+SMTP_FROM_NAME = os.getenv(
+    "SMTP_FROM_NAME", "Vaccination Reminder System"
+).strip()
+SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "true").strip().lower()

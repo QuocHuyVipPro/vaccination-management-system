@@ -8,6 +8,12 @@ from app.schemas.appointment import (
     AppointmentItemResponse,
     AppointmentResponse,
 )
+from app.schemas.notification import (
+    DeliveryHistoryResponse,
+    NotificationResponse,
+    NotificationType,
+    ReadAllNotificationsResponse,
+)
 from app.schemas.profile import ProfileCreate, ProfileResponse, ProfileUpdate
 from app.schemas.staff_appointment import AppointmentStatus, StaffAppointmentResponse
 from app.schemas.staff_vaccination import (
@@ -28,11 +34,15 @@ __all__ = [
     "AppointmentItemResponse",
     "AppointmentResponse",
     "AppointmentStatus",
+    "DeliveryHistoryResponse",
     "LoginRequest",
+    "NotificationResponse",
+    "NotificationType",
     "ProfileCreate",
     "ProfileResponse",
     "ProfileUpdate",
     "RegisterRequest",
+    "ReadAllNotificationsResponse",
     "StaffAppointmentResponse",
     "StaffVaccinationCreate",
     "StaffVaccinationResponse",
