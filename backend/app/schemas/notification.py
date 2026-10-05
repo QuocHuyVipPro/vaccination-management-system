@@ -33,3 +33,11 @@ class DeliveryHistoryResponse(BaseModel):
     trang_thai: str
     thoi_gian_gui: datetime | None
     loi_gui: str | None
+
+
+class ReminderRunResponse(BaseModel):
+    checked: int
+    created: int
+    sent: int
+    failed: int
+    skipped: int

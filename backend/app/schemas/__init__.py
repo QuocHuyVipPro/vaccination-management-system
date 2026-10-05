@@ -13,6 +13,7 @@ from app.schemas.notification import (
     NotificationResponse,
     NotificationType,
     ReadAllNotificationsResponse,
+    ReminderRunResponse,
 )
 from app.schemas.profile import ProfileCreate, ProfileResponse, ProfileUpdate
 from app.schemas.staff_appointment import AppointmentStatus, StaffAppointmentResponse
@@ -43,6 +44,7 @@ __all__ = [
     "ProfileUpdate",
     "RegisterRequest",
     "ReadAllNotificationsResponse",
+    "ReminderRunResponse",
     "StaffAppointmentResponse",
     "StaffVaccinationCreate",
     "StaffVaccinationResponse",

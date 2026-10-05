@@ -34,3 +34,25 @@ SMTP_FROM_NAME = os.getenv(
     "SMTP_FROM_NAME", "Vaccination Reminder System"
 ).strip()
 SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "true").strip().lower()
+
+
+def _positive_float_setting(name: str, default: str) -> float:
+    raw_value = os.getenv(name, default).strip()
+    try:
+        value = float(raw_value)
+    except ValueError as exc:
+        raise RuntimeError(f"{name} phải là một số dương") from exc
+    if value <= 0:
+        raise RuntimeError(f"{name} phải lớn hơn 0")
+    return value
+
+
+REMINDER_SCHEDULER_ENABLED = os.getenv(
+    "REMINDER_SCHEDULER_ENABLED", "false"
+).strip().lower() in {"true", "1", "yes", "on"}
+REMINDER_CHECK_INTERVAL_MINUTES = _positive_float_setting(
+    "REMINDER_CHECK_INTERVAL_MINUTES", "1"
+)
+REMINDER_BEFORE_HOURS = _positive_float_setting(
+    "REMINDER_BEFORE_HOURS", "24"
+)

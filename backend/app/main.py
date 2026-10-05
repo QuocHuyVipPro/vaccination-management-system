@@ -1,9 +1,12 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 from app.database import engine
 from app.routers.admin_notifications import router as admin_notifications_router
+from app.routers.admin_reminders import router as admin_reminders_router
 from app.routers.appointments import router as appointments_router
 from app.routers.auth import router as auth_router
 from app.routers.notifications import router as notifications_router
@@ -12,10 +15,24 @@ from app.routers.staff_appointments import router as staff_appointments_router
 from app.routers.staff_vaccinations import router as staff_vaccinations_router
 from app.routers.vaccination_history import router as vaccination_history_router
 from app.routers.vaccines import router as vaccines_router
+from app.services.reminder_scheduler import (
+    shutdown_reminder_scheduler,
+    start_reminder_scheduler,
+)
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    start_reminder_scheduler()
+    try:
+        yield
+    finally:
+        shutdown_reminder_scheduler()
 
 app = FastAPI(
     title="Hệ thống Quản lý và Nhắc lịch Tiêm chủng",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -31,6 +48,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(admin_notifications_router)
+app.include_router(admin_reminders_router)
 app.include_router(notifications_router)
 app.include_router(profiles_router)
 app.include_router(vaccines_router)
