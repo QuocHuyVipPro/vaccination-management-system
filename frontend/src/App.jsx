@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import PatientProfiles from './pages/customer/PatientProfiles';
@@ -21,18 +21,33 @@ import AdminReports from './pages/admin/AdminReports';
 import { initialVaccines } from './pages/admin/adminVaccineData';
 import { initialInventory } from './pages/admin/inventoryState';
 import { initialVaccinationState, completeVaccination } from './pages/staff/vaccinationState';
+import { AUTH_ROLES, clearSession, restoreSession } from './services/authService';
 
+
+const roleHomePages = {
+  [AUTH_ROLES.CUSTOMER]: 'dashboard',
+  [AUTH_ROLES.STAFF]: 'staff-dashboard',
+  [AUTH_ROLES.ADMIN]: 'admin-dashboard',
+};
+
+const rolePages = {
+  [AUTH_ROLES.CUSTOMER]: new Set([
+    'dashboard', 'profiles', 'registration', 'appointments', 'history', 'notifications',
+  ]),
+  [AUTH_ROLES.STAFF]: new Set([
+    'staff-dashboard', 'staff-appointments', 'staff-patients', 'staff-vaccination', 'staff-history',
+  ]),
+  [AUTH_ROLES.ADMIN]: new Set([
+    'admin-dashboard', 'admin-users', 'admin-vaccines', 'admin-inventory', 'admin-reports',
+  ]),
+};
 
 function App() {
-  const [currentPage, setCurrentPage] = useState(() => {
-    const preview = new URLSearchParams(window.location.search).get('preview');
-    return preview === 'admin' ? 'admin-dashboard' : preview === 'staff' ? 'staff-dashboard' : 'login';
-  });
-  const navigateAdmin = (page) => {
-    if (page === 'logout') setCurrentPage('login');
-    else if (['admin-dashboard', 'admin-users', 'admin-vaccines', 'admin-inventory', 'admin-reports'].includes(page)) setCurrentPage(page);
-    else console.log('Admin navigation preview:', page);
-  };
+  const [currentPage, setCurrentPage] = useState('login');
+  const [currentUser, setCurrentUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [loginNotice, setLoginNotice] = useState('');
+  const [registeredEmail, setRegisteredEmail] = useState('');
 
   const [appointments, setAppointments] = useState(null);
   const [adminUsers, setAdminUsers] = useState(null);
@@ -41,43 +56,130 @@ function App() {
   const [notifications, setNotifications] = useState(initialNotifications);
   const [staffState, setStaffState] = useState(initialVaccinationState);
   const [staffEntry, setStaffEntry] = useState({ key: 0 });
-  const setStaffAppointments = (update) => setStaffState((current) => ({ ...current, appointments: typeof update === 'function' ? update(current.appointments) : update }));
+
+  useEffect(() => {
+    let active = true;
+    restoreSession()
+      .then((user) => {
+        if (!active) return;
+        if (user && roleHomePages[user.vai_tro]) {
+          setCurrentUser(user);
+          setCurrentPage(roleHomePages[user.vai_tro]);
+        } else {
+          setCurrentUser(null);
+          setCurrentPage('login');
+        }
+      })
+      .finally(() => {
+        if (active) setAuthLoading(false);
+      });
+    return () => { active = false; };
+  }, []);
+
+  const handleLogin = (user) => {
+    const homePage = roleHomePages[user?.vai_tro];
+    if (!homePage) {
+      clearSession();
+      setCurrentUser(null);
+      setCurrentPage('login');
+      return;
+    }
+    setLoginNotice('');
+    setRegisteredEmail('');
+    setCurrentUser(user);
+    setCurrentPage(homePage);
+  };
+
+  const handleLogout = () => {
+    clearSession();
+    setCurrentUser(null);
+    setCurrentPage('login');
+    setLoginNotice('');
+    setRegisteredEmail('');
+  };
+
+  const handleRegistered = (email) => {
+    setRegisteredEmail(email);
+    setLoginNotice('Đăng ký thành công. Vui lòng đăng nhập bằng tài khoản vừa tạo.');
+    setCurrentPage('login');
+  };
+
+  const navigateForRole = (page) => {
+    if (page === 'logout') {
+      handleLogout();
+      return;
+    }
+    if (rolePages[currentUser?.vai_tro]?.has(page)) setCurrentPage(page);
+  };
+
+  const navigateAdmin = (page) => navigateForRole(page);
+  const setStaffAppointments = (update) => setStaffState((current) => ({
+    ...current,
+    appointments: typeof update === 'function' ? update(current.appointments) : update,
+  }));
   const navigateStaff = (page, payload) => {
-    if (page === 'logout') setCurrentPage('login');
-    else if (['staff-vaccination', 'staff-history'].includes(page)) {
+    if (page === 'logout') {
+      handleLogout();
+    } else if (['staff-vaccination', 'staff-history'].includes(page)) {
+      if (!rolePages[currentUser?.vai_tro]?.has(page)) return;
       setStaffEntry((current) => ({ ...payload, key: current.key + 1 }));
       setCurrentPage(page);
+    } else {
+      navigateForRole(page);
     }
-    else if (['staff-dashboard', 'staff-appointments', 'staff-patients'].includes(page)) setCurrentPage(page);
-    else console.log('Staff navigation preview:', page, payload);
+  };
+  const navigateCustomer = (menu) => {
+    const pages = {
+      overview: 'dashboard',
+      users: 'profiles',
+      vaccine: 'registration',
+      calendar: 'appointments',
+      history: 'history',
+      bell: 'notifications',
+      logout: 'logout',
+    };
+    if (pages[menu]) navigateForRole(pages[menu]);
   };
 
-  const navigate = (menu) => {
-    const pages = { overview: 'dashboard', users: 'profiles', vaccine: 'registration', calendar: 'appointments', history: 'history', bell: 'notifications', logout: 'login' };
-    if (pages[menu]) setCurrentPage(pages[menu]);
-  };
+  if (authLoading) {
+    return <main className="auth-loading" role="status">Đang kiểm tra phiên đăng nhập...</main>;
+  }
 
-  // Keep the appointment demo state when switching customer pages.
-  return <NotificationContext.Provider value={{ notifications, setNotifications, onOpenNotifications: () => setCurrentPage('notifications') }}>
-    {currentPage === 'admin-dashboard' && <AdminDashboard onNavigate={navigateAdmin} />}
-    {currentPage === 'admin-users' && <AdminUsers onNavigate={navigateAdmin} users={adminUsers} setUsers={setAdminUsers} />}
-    {currentPage === 'admin-vaccines' && <AdminVaccines onNavigate={navigateAdmin} vaccines={adminVaccines} setVaccines={setAdminVaccines} />}
-    {currentPage === 'admin-inventory' && <AdminInventory onNavigate={navigateAdmin} vaccines={adminVaccines ?? initialVaccines} inventory={inventory} setInventory={setInventory} />}
-    {currentPage === 'admin-reports' && <AdminReports onNavigate={navigateAdmin} />}
-    {currentPage === 'staff-dashboard' && <StaffDashboard onNavigate={navigateStaff} />}
-    {currentPage === 'staff-patients' && <StaffPatients onNavigate={navigateStaff} />}
-    {currentPage === 'staff-history' && <StaffHistory key={staffEntry.key} patientId={staffEntry.patientId} records={staffState.records} onNavigate={navigateStaff} />}
-    {currentPage === 'staff-appointments' && <StaffAppointments onNavigate={navigateStaff} appointments={staffState.appointments} setAppointments={setStaffAppointments} />}
-    {currentPage === 'staff-vaccination' && <StaffVaccination key={staffEntry.key} entry={staffEntry} state={staffState} onComplete={(draft) => setStaffState((current) => completeVaccination(current, draft))} onNavigate={navigateStaff} />}
-    {currentPage === 'notifications' && <Notifications onNavigate={navigate} />}
-    {currentPage === 'history' && <VaccinationHistory onNavigate={navigate} />}
-    {currentPage === 'appointments' && <Appointments appointments={appointments} setAppointments={setAppointments} onNavigate={navigate} onRegister={() => setCurrentPage('registration')} />}
-    {currentPage === 'registration' && <VaccinationRegistration onNavigate={navigate} onOverview={() => setCurrentPage('dashboard')} onAppointments={() => setCurrentPage('appointments')} />}
-    {currentPage === 'profiles' && <PatientProfiles onNavigate={navigate} />}
-    {currentPage === 'dashboard' && <CustomerDashboard onNavigate={navigate} />}
+  if (!currentUser) {
+    if (currentPage === 'register') {
+      return <Register onLogin={() => setCurrentPage('login')} onRegistered={handleRegistered} />;
+    }
+    return (
+      <Login
+        initialEmail={registeredEmail}
+        successMessage={loginNotice}
+        onRegister={() => { setLoginNotice(''); setCurrentPage('register'); }}
+        onLogin={handleLogin}
+      />
+    );
+  }
 
-    {currentPage === 'register' && <Register onLogin={() => setCurrentPage('login')} />}
-    {currentPage === 'login' && <Login onRegister={() => setCurrentPage('register')} onLogin={() => setCurrentPage('dashboard')} />}
+  const allowedPage = rolePages[currentUser.vai_tro]?.has(currentPage)
+    ? currentPage
+    : roleHomePages[currentUser.vai_tro];
+
+  return <NotificationContext.Provider value={{ notifications, setNotifications, onOpenNotifications: () => navigateForRole('notifications') }}>
+    {allowedPage === 'admin-dashboard' && <AdminDashboard onNavigate={navigateAdmin} />}
+    {allowedPage === 'admin-users' && <AdminUsers onNavigate={navigateAdmin} users={adminUsers} setUsers={setAdminUsers} />}
+    {allowedPage === 'admin-vaccines' && <AdminVaccines onNavigate={navigateAdmin} vaccines={adminVaccines} setVaccines={setAdminVaccines} />}
+    {allowedPage === 'admin-inventory' && <AdminInventory onNavigate={navigateAdmin} vaccines={adminVaccines ?? initialVaccines} inventory={inventory} setInventory={setInventory} />}
+    {allowedPage === 'admin-reports' && <AdminReports onNavigate={navigateAdmin} />}
+    {allowedPage === 'staff-dashboard' && <StaffDashboard onNavigate={navigateStaff} />}
+    {allowedPage === 'staff-patients' && <StaffPatients onNavigate={navigateStaff} />}
+    {allowedPage === 'staff-history' && <StaffHistory key={staffEntry.key} patientId={staffEntry.patientId} records={staffState.records} onNavigate={navigateStaff} />}
+    {allowedPage === 'staff-appointments' && <StaffAppointments onNavigate={navigateStaff} appointments={staffState.appointments} setAppointments={setStaffAppointments} />}
+    {allowedPage === 'staff-vaccination' && <StaffVaccination key={staffEntry.key} entry={staffEntry} state={staffState} onComplete={(draft) => setStaffState((current) => completeVaccination(current, draft))} onNavigate={navigateStaff} />}
+    {allowedPage === 'notifications' && <Notifications onNavigate={navigateCustomer} />}
+    {allowedPage === 'history' && <VaccinationHistory onNavigate={navigateCustomer} />}
+    {allowedPage === 'appointments' && <Appointments appointments={appointments} setAppointments={setAppointments} onNavigate={navigateCustomer} onRegister={() => navigateForRole('registration')} />}
+    {allowedPage === 'registration' && <VaccinationRegistration onNavigate={navigateCustomer} onOverview={() => navigateForRole('dashboard')} onAppointments={() => navigateForRole('appointments')} />}
+    {allowedPage === 'profiles' && <PatientProfiles onNavigate={navigateCustomer} />}
+    {allowedPage === 'dashboard' && <CustomerDashboard onNavigate={navigateCustomer} />}
   </NotificationContext.Provider>;
 }
 

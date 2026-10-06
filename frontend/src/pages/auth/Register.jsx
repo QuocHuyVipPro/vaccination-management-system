@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import heroImg from '../../assets/hero.png';
+import { registerCustomer } from '../../services/authService';
 import './Register.css';
 
 function RegisterIcon({ name }) {
@@ -25,7 +26,7 @@ function RegisterField({ name, label, icon, value, onChange, error, type = 'text
       <label className="register-form-label" htmlFor={id}>{label}{required && <span aria-hidden="true"> *</span>}</label>
       <div className="register-input-wrapper">
         <span className="register-input-icon"><RegisterIcon name={icon} /></span>
-        <input id={id} name={name} className="register-form-input" type={isPassword && visible ? 'text' : type} autoComplete={autoComplete} value={value} onChange={onChange} required={required} minLength={isPassword ? 6 : undefined} placeholder={label} aria-invalid={Boolean(error)} aria-describedby={error ? `${id}-error` : undefined} />
+        <input id={id} name={name} className="register-form-input" type={isPassword && visible ? 'text' : type} autoComplete={autoComplete} value={value} onChange={onChange} required={required} minLength={isPassword ? 8 : undefined} placeholder={label} aria-invalid={Boolean(error)} aria-describedby={error ? `${id}-error` : undefined} />
         {isPassword && <button type="button" className="register-password-toggle" onClick={() => setVisible(!visible)} aria-label={`${visible ? 'Ẩn' : 'Hiện'} ${label.toLowerCase()}`} aria-pressed={visible}><RegisterIcon name={visible ? 'eyeOff' : 'eye'} /></button>}
       </div>
       {error && <p id={`${id}-error`} className="register-error" role="alert">{error}</p>}
@@ -38,14 +39,14 @@ function validateRegistration({ fullName, email, password, confirmPassword, agre
   if (!fullName.trim()) errors.fullName = 'Vui lòng nhập họ và tên.';
   if (!email.trim()) errors.email = 'Vui lòng nhập email.';
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) errors.email = 'Email không đúng định dạng.';
-  if (password.length < 6) errors.password = 'Mật khẩu phải có ít nhất 6 ký tự.';
+  if (password.length < 8) errors.password = 'Mật khẩu phải có ít nhất 8 ký tự.';
   if (!confirmPassword) errors.confirmPassword = 'Vui lòng xác nhận mật khẩu.';
   else if (confirmPassword !== password) errors.confirmPassword = 'Mật khẩu xác nhận không khớp.';
   if (!agreeTerms) errors.agreeTerms = 'Vui lòng đồng ý với điều khoản và chính sách bảo mật.';
   return errors;
 }
 
-export default function Register({ onLogin }) {
+export default function Register({ onLogin, onRegistered }) {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -53,8 +54,10 @@ export default function Register({ onLogin }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     const nextErrors = validateRegistration({ fullName, email, password, confirmPassword, agreeTerms });
     setErrors(nextErrors);
@@ -63,8 +66,16 @@ export default function Register({ onLogin }) {
       event.currentTarget.elements.namedItem(firstError)?.focus();
       return;
     }
-    // Valid frontend demo registration returns to Login; no account is persisted.
-    onLogin?.();
+    setSubmitError('');
+    setSubmitting(true);
+    try {
+      await registerCustomer({ fullName, email, phone, password });
+      onRegistered?.(email.trim());
+    } catch (requestError) {
+      setSubmitError(requestError.message || 'Không thể đăng ký. Vui lòng thử lại.');
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -74,6 +85,7 @@ export default function Register({ onLogin }) {
         <div className="register-brand"><span className="register-brand-mark"><RegisterIcon name="shield" /></span><span className="register-brand-name">TIÊM CHỦNG<strong>CARE</strong></span></div>
         <header className="register-heading"><h1 id="register-title" className="register-title">ĐĂNG KÝ TÀI KHOẢN</h1><p className="register-subtitle">Tạo tài khoản để đăng ký và theo dõi lịch tiêm chủng</p></header>
         <form className="register-form" onSubmit={handleSubmit} noValidate>
+          {submitError && <p className="register-server-error" role="alert">{submitError}</p>}
           <RegisterField name="fullName" label="Họ và tên" icon="user" value={fullName} onChange={(event) => setFullName(event.target.value)} autoComplete="name" required error={errors.fullName} />
           <RegisterField name="email" label="Email" icon="email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" required error={errors.email} />
           <RegisterField name="phone" label="Số điện thoại" icon="phone" type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} autoComplete="tel" />
@@ -83,7 +95,7 @@ export default function Register({ onLogin }) {
             <label className="register-checkbox-label" htmlFor="register-agreeTerms"><input id="register-agreeTerms" name="agreeTerms" type="checkbox" className="register-checkbox-input" checked={agreeTerms} onChange={(event) => setAgreeTerms(event.target.checked)} required aria-invalid={Boolean(errors.agreeTerms)} aria-describedby={errors.agreeTerms ? 'register-terms-error' : undefined} /><span className="register-checkbox-custom" aria-hidden="true" /><span className="register-checkbox-text">Tôi đồng ý với <span className="register-policy-link">Điều khoản sử dụng</span> và <span className="register-policy-link">Chính sách bảo mật</span></span></label>
             {errors.agreeTerms && <p id="register-terms-error" className="register-error" role="alert">{errors.agreeTerms}</p>}
           </div>
-          <button type="submit" className="register-submit">Đăng ký</button>
+          <button type="submit" className="register-submit" disabled={submitting}>{submitting ? 'Đang đăng ký...' : 'Đăng ký'}</button>
         </form>
         <p className="register-login-hint">Đã có tài khoản?{' '}<button type="button" className="register-login-link" onClick={onLogin}>Đăng nhập</button></p>
       </section>

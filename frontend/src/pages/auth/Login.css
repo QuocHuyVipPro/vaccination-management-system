@@ -67,6 +67,11 @@
 .login-page .login-submit { width: 100%; height: 48px; border: 1px solid var(--login-blue); border-radius: 8px; background: var(--login-blue); color: white; font-size: 14px; font-weight: 650; transition: background .2s ease, box-shadow .2s ease; }
 .login-page .login-submit:hover { background: #1450a3; box-shadow: 0 3px 12px rgb(26 95 180 / 15%); }
 .login-page .login-submit:active { box-shadow: none; }
+.login-page .login-submit:disabled { cursor: wait; opacity: .72; box-shadow: none; }
+.login-page .login-form-input:disabled { cursor: wait; background: #f7f9fc; }
+.login-page .login-message { padding: 10px 12px; border: 1px solid; border-radius: 8px; font-size: 12px; line-height: 1.5; }
+.login-page .login-message-error { border-color: #f4c7c3; background: #fff4f3; color: #b42318; }
+.login-page .login-message-success { border-color: #a9dbc2; background: #effaf4; color: #13734a; }
 .login-page .login-register-hint { margin-top: 20px; text-align: center; color: var(--login-muted); font-size: 12px; }
 .login-page .login-tagline { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--login-border); text-align: center; color: var(--login-muted); font-size: 10px; }
 

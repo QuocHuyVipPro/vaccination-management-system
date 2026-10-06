@@ -108,3 +108,12 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+.auth-loading {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  background: #f3f6fa;
+  color: #0d2b55;
+  font: 600 14px/1.5 'Inter', 'Segoe UI', Arial, sans-serif;
+}

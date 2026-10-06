@@ -63,6 +63,8 @@
 .register-page .register-submit { width: 100%; height: 48px; border: 1px solid var(--register-blue); border-radius: 8px; background: var(--register-blue); color: white; font-size: 14px; font-weight: 650; transition: background .2s ease, box-shadow .2s ease; }
 .register-page .register-submit:hover { background: #1450a3; box-shadow: 0 3px 12px rgb(26 95 180 / 15%); }
 .register-page .register-submit:active { box-shadow: none; }
+.register-page .register-submit:disabled { cursor: wait; opacity: .72; box-shadow: none; }
+.register-page .register-server-error { padding: 10px 12px; border: 1px solid #f4c7c3; border-radius: 8px; background: #fff4f3; color: #b42318; font-size: 12px; line-height: 1.5; }
 
 @media (max-width: 1200px) {
   .register-page { padding-right: 5%; }

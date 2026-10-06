@@ -1,17 +1,29 @@
 import { useState } from 'react';
 import heroImg from '../../assets/hero.png';
+import { login } from '../../services/authService';
 import './Login.css';
 
-function Login({ onRegister, onLogin }) {
-  const [email, setEmail] = useState('');
+function Login({ onRegister, onLogin, initialEmail = '', successMessage = '' }) {
+  const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!e.currentTarget.reportValidity()) return;
-    onLogin?.();
+    setError('');
+    setSubmitting(true);
+    try {
+      const user = await login(email, password, rememberMe);
+      onLogin?.(user);
+    } catch (requestError) {
+      setError(requestError.message || 'Không thể đăng nhập. Vui lòng thử lại.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -41,6 +53,8 @@ function Login({ onRegister, onLogin }) {
 
         {/* Form */}
         <form className="login-form" onSubmit={handleSubmit}>
+          {successMessage && <p className="login-message login-message-success" role="status">{successMessage}</p>}
+          {error && <p className="login-message login-message-error" role="alert">{error}</p>}
 
           {/* Email */}
           <div className="login-form-group">
@@ -59,7 +73,8 @@ function Login({ onRegister, onLogin }) {
                 className="login-form-input"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                disabled={submitting}
                 required
               />
             </div>
@@ -78,17 +93,19 @@ function Login({ onRegister, onLogin }) {
               <input
                 id="password" autoComplete="current-password"
                 type={showPassword ? 'text' : 'password'}
-                minLength={6}
+                minLength={1}
                 className="login-form-input"
                 placeholder="Mật khẩu"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => { setPassword(e.target.value); setError(''); }}
+                disabled={submitting}
                 required
               />
               <button
                 type="button"
                 className="login-password-toggle" aria-pressed={showPassword}
                 onClick={() => setShowPassword(!showPassword)}
+                disabled={submitting}
                 aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
               >
                 {showPassword ? (
@@ -127,8 +144,8 @@ function Login({ onRegister, onLogin }) {
           </div>
 
           {/* Nút đăng nhập */}
-          <button type="submit" className="login-submit">
-            Đăng nhập
+          <button type="submit" className="login-submit" disabled={submitting}>
+            {submitting ? 'Đang đăng nhập...' : 'Đăng nhập'}
           </button>
 
         </form>
