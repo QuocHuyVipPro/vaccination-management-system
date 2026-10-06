@@ -3,8 +3,15 @@ export const API_BASE_URL =
 
 const fieldLabels = {
   ho_ten: 'Họ và tên',
+  ngay_sinh: 'Ngày sinh',
+  gioi_tinh: 'Giới tính',
   email: 'Email',
   so_dien_thoai: 'Số điện thoại',
+  dia_chi: 'Địa chỉ',
+  nguoi_giam_ho: 'Người giám hộ',
+  moi_quan_he: 'Mối quan hệ',
+  di_ung: 'Dị ứng',
+  ghi_chu_suc_khoe: 'Ghi chú sức khỏe',
   mat_khau: 'Mật khẩu',
 };
 

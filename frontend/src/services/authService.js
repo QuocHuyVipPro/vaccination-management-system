@@ -1,4 +1,4 @@
-import { apiRequest } from './api.js';
+import { ApiError, apiRequest } from './api.js';
 
 export const ACCESS_TOKEN_KEY = 'access_token';
 export const CURRENT_USER_KEY = 'current_user';
@@ -22,6 +22,30 @@ export function clearSession() {
   for (const storage of [localStorage, sessionStorage]) {
     storage.removeItem(ACCESS_TOKEN_KEY);
     storage.removeItem(CURRENT_USER_KEY);
+  }
+}
+
+export function getAccessToken() {
+  return localStorage.getItem(ACCESS_TOKEN_KEY)
+    || sessionStorage.getItem(ACCESS_TOKEN_KEY);
+}
+
+function notifyUnauthorized() {
+  clearSession();
+  window.dispatchEvent(new Event('auth:unauthorized'));
+}
+
+export async function authenticatedRequest(path, options = {}) {
+  const token = getAccessToken();
+  if (!token) {
+    notifyUnauthorized();
+    throw new ApiError('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.', 401);
+  }
+  try {
+    return await apiRequest(path, { ...options, token });
+  } catch (error) {
+    if (error.status === 401) notifyUnauthorized();
+    throw error;
   }
 }
 

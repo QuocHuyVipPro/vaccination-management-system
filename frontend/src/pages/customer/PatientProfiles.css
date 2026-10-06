@@ -13,7 +13,12 @@
 .patient-profiles .pp-details dt { color: var(--cd-muted); font-size: 12px; margin-bottom: 3px; }
 .patient-profiles .pp-details dd { font-size: 14px; font-weight: 550; overflow-wrap: anywhere; white-space: pre-wrap; }
 .patient-profiles .pp-status { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 22px; font-size: 12px; color: var(--cd-muted); }
-.patient-profiles .pp-card-actions { display: flex; gap: 12px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--cd-border); }
+.patient-profiles .pp-card-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 22px; border-top: 1px solid var(--cd-border); }
+.patient-profiles .pp-card-actions .cd-button:disabled { cursor: wait; opacity: .65; }
+.patient-profiles .pp-delete { color: #b42318; border-color: #f0c5c1; }
+.patient-profiles .pp-delete:hover:not(:disabled) { background: #fff4f3; border-color: #df928b; }
+.patient-profiles .pp-page-error { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; padding: 13px 16px; border: 1px solid #f4c7c3; border-radius: 10px; background: #fff4f3; color: #b42318; font-size: 13px; }
+.patient-profiles .pp-page-error .cd-button { flex-shrink: 0; }
 .patient-profiles .pp-empty { text-align: center; padding: 48px 24px; }
 .patient-profiles .pp-empty > .cd-icon-box { margin: 0 auto 16px; }
 .patient-profiles .pp-empty h2 { font-size: 20px; font-weight: 700; }
@@ -37,6 +42,9 @@
 .patient-profiles .pp-field :is(input, select, textarea):focus { outline: none; border-color: var(--cd-blue); box-shadow: 0 0 0 3px rgb(26 95 180 / 10%); }
 .patient-profiles .pp-field [aria-invalid="true"] { border-color: #b42318; }
 .patient-profiles .pp-error { color: #b42318; font-size: 12px; }
+.patient-profiles .pp-request-error { margin: 0; padding: 10px 12px; border: 1px solid #f4c7c3; border-radius: 8px; background: #fff4f3; color: #b42318; font-size: 12px; line-height: 1.5; }
+.patient-profiles .pp-field :is(input, select, textarea):disabled { cursor: wait; background: #f7f9fc; }
+.patient-profiles .pp-modal-footer .cd-button:disabled, .patient-profiles .pp-close:disabled { cursor: wait; opacity: .65; }
 .patient-profiles .pp-modal-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 18px 24px; border-top: 1px solid var(--cd-border); }
 
 @media (max-width: 1100px) {
@@ -48,6 +56,7 @@
   .patient-profiles .pp-modal-header, .patient-profiles .pp-modal-body, .patient-profiles .pp-modal-footer { padding: 18px; }
   .patient-profiles .pp-modal-header h2 { font-size: 17px; }
   .patient-profiles .pp-field :is(input, select, textarea) { font-size: 16px; }
+  .patient-profiles .pp-page-error { align-items: flex-start; flex-direction: column; }
 }
 @media (max-width: 380px) {
   .patient-profiles .pp-details { grid-template-columns: minmax(0, 1fr); }

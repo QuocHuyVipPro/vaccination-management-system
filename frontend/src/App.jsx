@@ -98,6 +98,11 @@ function App() {
     setRegisteredEmail('');
   };
 
+  useEffect(() => {
+    window.addEventListener('auth:unauthorized', handleLogout);
+    return () => window.removeEventListener('auth:unauthorized', handleLogout);
+  }, []);
+
   const handleRegistered = (email) => {
     setRegisteredEmail(email);
     setLoginNotice('Đăng ký thành công. Vui lòng đăng nhập bằng tài khoản vừa tạo.');
@@ -178,7 +183,7 @@ function App() {
     {allowedPage === 'history' && <VaccinationHistory onNavigate={navigateCustomer} />}
     {allowedPage === 'appointments' && <Appointments appointments={appointments} setAppointments={setAppointments} onNavigate={navigateCustomer} onRegister={() => navigateForRole('registration')} />}
     {allowedPage === 'registration' && <VaccinationRegistration onNavigate={navigateCustomer} onOverview={() => navigateForRole('dashboard')} onAppointments={() => navigateForRole('appointments')} />}
-    {allowedPage === 'profiles' && <PatientProfiles onNavigate={navigateCustomer} />}
+    {allowedPage === 'profiles' && <PatientProfiles currentUser={currentUser} onNavigate={navigateCustomer} />}
     {allowedPage === 'dashboard' && <CustomerDashboard onNavigate={navigateCustomer} />}
   </NotificationContext.Provider>;
 }
