@@ -27,15 +27,21 @@
 .staff-appointments .sa-confirmed { background: #eaf3ff; color: #1a5fb4; }
 .staff-appointments .sa-completed { background: #eaf6ee; color: #26714c; }
 .staff-appointments .sa-cancelled { background: #f8eded; color: #97504f; }
+.staff-appointments .sa-unknown { background: #f2f5f9; color: var(--cd-muted); }
+.staff-appointments .sa-page-error { margin-bottom: 20px; padding: 12px 16px; border: 1px solid #edc2c2; border-radius: 10px; background: #fff3f3; color: #8a2929; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .staff-appointments .sa-empty { padding: 44px 24px; text-align: center; }
 .staff-appointments .sa-empty .cd-icon-box { margin: 0 auto 18px; }
 .staff-appointments .sa-empty h2 { font-size: 20px; font-weight: 700; }
+.staff-appointments .sa-empty p { margin-top: 7px; color: var(--cd-muted); }
 .staff-appointments .sa-modal { width: 650px; max-width: calc(100% - 32px); max-height: calc(100dvh - 40px); overflow-y: auto; margin: auto; padding: 0; border: 1px solid var(--cd-border); border-radius: 14px; background: white; color: var(--cd-navy); font: inherit; box-shadow: 0 20px 64px #0d2b5529; }
 .staff-appointments .sa-modal::backdrop { background: #081c3a66; }
 .staff-appointments .sa-modal header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--cd-border); }
 .staff-appointments .sa-modal h2 { font-size: 19px; font-weight: 700; line-height: 1.4; }
 .staff-appointments .sa-close { width: 34px; height: 34px; border: 0; border-radius: 8px; background: #f3f6fa; color: var(--cd-muted); font-size: 22px; }
 .staff-appointments .sa-modal-body { padding: 24px; }
+.staff-appointments .sa-modal-state { min-height: 180px; padding: 32px 24px; display: grid; place-items: center; text-align: center; color: var(--cd-muted); }
+.staff-appointments .sa-request-error { color: #8a2929; gap: 14px; }
+.staff-appointments .sa-action-error { margin-bottom: 18px; padding: 10px 12px; border-radius: 8px; background: #fff3f3; color: #8a2929; }
 .staff-appointments .sa-question { margin-bottom: 20px; }
 .staff-appointments .sa-modal-body section + section { border-top: 1px solid var(--cd-border); margin-top: 20px; padding-top: 20px; }
 .staff-appointments .sa-modal h3 { font-size: 13px; font-weight: 700; margin-bottom: 12px; }

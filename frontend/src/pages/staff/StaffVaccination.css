@@ -1,4 +1,4 @@
-.staff-vaccination .sv-stepper { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); list-style: none; padding: 22px; margin: 0 0 24px; background: white; border: 1px solid var(--cd-border); border-radius: 12px; gap: 16px; }
+.staff-vaccination .sv-stepper { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; padding: 22px; margin: 0 0 24px; background: white; border: 1px solid var(--cd-border); border-radius: 12px; gap: 16px; }
 .staff-vaccination .sv-stepper li { display: flex; align-items: center; gap: 10px; color: var(--cd-muted); font-size: 12px; }
 .staff-vaccination .sv-stepper li > span { display: grid; place-items: center; width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; background: #f0f3f7; font-weight: 700; }
 .staff-vaccination .sv-stepper .sv-step-active { color: var(--cd-blue); }
@@ -41,6 +41,18 @@
 .staff-vaccination .sv-notice, .staff-vaccination .sv-warning { border-radius: 9px; padding: 16px; margin: 18px 0; font-size: 13px; line-height: 1.7; background: #eff5fc; color: #365981; border: 1px solid #dce7f4; }
 .staff-vaccination .sv-warning { background: #fff7e8; border-color: #efdfb9; color: #865b16; }
 .staff-vaccination .sv-error { color: #b44343; font-size: 12px; font-weight: 400; margin: 8px 0; }
+.staff-vaccination .sv-page-error { margin-bottom: 20px; padding: 12px 16px; border: 1px solid #edc2c2; border-radius: 10px; background: #fff3f3; color: #8a2929; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.staff-vaccination .sv-data-state { min-height: 90px; margin-top: 20px; padding: 18px; border-radius: 9px; background: #f7f9fc; color: var(--cd-muted); display: grid; place-items: center; text-align: center; }
+.staff-vaccination .sv-request-error { color: #8a2929; gap: 12px; }
+.staff-vaccination .sv-item-choices { border: 0; padding: 0; margin: 22px 0 0; display: grid; gap: 10px; }
+.staff-vaccination .sv-item-choices legend { margin-bottom: 10px; font-size: 13px; font-weight: 650; }
+.staff-vaccination .sv-item-choice { display: flex; align-items: center; gap: 12px; padding: 15px; border: 1px solid var(--cd-border); border-radius: 9px; cursor: pointer; }
+.staff-vaccination .sv-item-choice:hover { border-color: #9bbce6; }
+.staff-vaccination .sv-item-selected { border-color: var(--cd-blue); background: #f3f8ff; }
+.staff-vaccination .sv-item-choice input { width: 18px; height: 18px; accent-color: var(--cd-blue); }
+.staff-vaccination .sv-item-choice strong, .staff-vaccination .sv-item-choice small { display: block; }
+.staff-vaccination .sv-item-choice small { margin-top: 4px; color: var(--cd-muted); }
+.staff-vaccination .sv-submit-error { padding: 12px 14px; border-radius: 8px; background: #fff3f3; color: #8a2929; }
 .staff-vaccination .sv-actions { display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--cd-border); padding-top: 22px; margin-top: 26px; }
 .staff-vaccination .sv-empty { text-align: center; padding: 36px 16px; color: var(--cd-muted); }
 .staff-vaccination .sv-empty h3 { margin: 12px 0; color: var(--cd-navy); }

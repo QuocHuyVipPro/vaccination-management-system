@@ -4,7 +4,8 @@
 .staff-dashboard .sd-appointments > li { display: flex; gap: 18px; padding: 20px 0; border-bottom: 1px solid var(--cd-border); }
 .staff-dashboard .sd-appointments > li:first-child { padding-top: 0; }
 .staff-dashboard .sd-appointments > li:last-child { padding-bottom: 0; border-bottom: 0; }
-.staff-dashboard .sd-time { display: grid; place-items: center; align-self: flex-start; flex-shrink: 0; width: 64px; min-height: 42px; border-radius: 8px; background: #edf3fb; color: var(--cd-blue); font-size: 14px; font-weight: 700; }
+.staff-dashboard .sd-time { display: grid; place-items: center; align-self: flex-start; flex-shrink: 0; width: 76px; min-height: 54px; padding: 7px; border-radius: 8px; background: #edf3fb; color: var(--cd-blue); font-size: 14px; font-weight: 700; }
+.staff-dashboard .sd-time small { margin-top: 3px; color: var(--cd-muted); font-size: 9px; font-weight: 500; }
 .staff-dashboard .sd-appointment-body { flex: 1; min-width: 0; }
 .staff-dashboard .sd-appointment-body h3 { font-size: 15px; font-weight: 650; }
 .staff-dashboard .sd-appointment-body p { font-size: 12px; color: var(--cd-muted); margin: 4px 0 9px; overflow-wrap: anywhere; }
@@ -23,6 +24,12 @@
 .staff-dashboard .sd-activity-icon .cd-icon { width: 15px; height: 15px; }
 .staff-dashboard .sd-activities strong { font-size: 12px; font-weight: 600; }
 .staff-dashboard .sd-activities p { font-size: 12px; color: var(--cd-muted); margin-top: 3px; }
+.staff-dashboard .sd-dashboard-error { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; padding: 14px 16px; border: 1px solid #edc2c2; border-radius: 10px; background: #fff3f3; color: #8a2929; }
+.staff-dashboard .sd-section-state { min-height: 110px; display: grid; place-items: center; text-align: center; color: var(--cd-muted); }
+.staff-dashboard .sd-section-state.sd-error { color: #8a2929; align-content: center; gap: 12px; }
+.staff-dashboard .sd-patient-summary > strong { display: block; margin: 8px 0; color: var(--cd-blue); font-size: 38px; }
+.staff-dashboard .sd-patient-summary > p { margin-bottom: 18px; color: var(--cd-muted); font-size: 12px; }
+.staff-dashboard .sd-empty-message { padding: 32px 24px; color: var(--cd-muted); text-align: center; }
 .staff-dashboard .sd-modal { width: 520px; max-width: calc(100% - 32px); max-height: calc(100dvh - 40px); overflow-y: auto; margin: auto; padding: 0; border: 1px solid var(--cd-border); border-radius: 14px; background: white; color: var(--cd-navy); font: inherit; box-shadow: 0 20px 64px #0d2b5529; }
 .staff-dashboard .sd-modal::backdrop { background: #081c3a66; }
 .staff-dashboard .sd-modal header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--cd-border); }
@@ -41,4 +48,5 @@
   .staff-dashboard .sd-row-actions { gap: 10px; }
   .staff-dashboard .sd-row-actions button { min-height: 40px; }
   .staff-dashboard .sd-modal dl { grid-template-columns: minmax(0, 1fr); }
+  .staff-dashboard .sd-dashboard-error { align-items: stretch; flex-direction: column; }
 }

@@ -50,7 +50,9 @@
 }
 .admin-vaccines .av-heading { display:flex; justify-content:space-between; gap:20px; align-items:center; flex-wrap:wrap; }
 .admin-vaccines .av-filters { display:block; }
-.admin-vaccines .av-filter-grid { display:grid; grid-template-columns:minmax(0,1fr) 220px; gap:20px; }
+.admin-vaccines .av-filter-grid { display:grid; grid-template-columns:minmax(0,1fr) 220px auto; gap:14px; align-items:end; }
+.admin-vaccines .av-filter-actions { display:flex; gap:8px; }
+.admin-vaccines .av-filter-actions .cd-button { min-height:50px; }
 .admin-vaccines .av-table th:nth-child(2) { width:19%; }
 .admin-vaccines .av-table th:last-child { width:14%; }
 .admin-vaccines .av-badge { display:inline-block; padding:5px 7px; font-size:10px; border-radius:6px; background:#edf3fb; color:var(--cd-blue); }
@@ -62,14 +64,15 @@
 .admin-vaccines .av-actions button { background:#f4f7fb; border:0; border-radius:5px; padding:8px 5px; text-align:left; color:var(--cd-blue); font-size:11px; overflow-wrap:anywhere; }
 .admin-vaccines .av-form { display:grid; gap:16px; }
 .admin-vaccines .av-form label { display:block; font-size:13px; margin-bottom:7px; }
-.admin-vaccines .av-form input { width:100%; min-width:0; padding:12px; border:1px solid var(--cd-border); border-radius:8px; font:inherit; }
-.admin-vaccines .av-form input:focus-visible { outline:2px solid var(--cd-blue); }
-.admin-vaccines .av-form input[aria-invalid=true] { border-color:#b44343; }
+.admin-vaccines .av-form :is(input,select) { width:100%; min-width:0; padding:12px; border:1px solid var(--cd-border); border-radius:8px; background:white; color:var(--cd-navy); font:inherit; }
+.admin-vaccines .av-form :is(input,select):focus-visible { outline:2px solid var(--cd-blue); }
+.admin-vaccines .av-form :is(input,select)[aria-invalid=true] { border-color:#b44343; }
 .admin-vaccines .av-error { margin-top:5px; font-size:12px; color:#b44343; }
 .admin-vaccines .av-modal .av-details { padding:24px; }
 @media(max-width:768px) {
 .admin-vaccines .av-filter-grid { grid-template-columns:minmax(0,1fr); }
-.admin-vaccines .av-form input { font-size:16px; }
+.admin-vaccines .av-filter-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+.admin-vaccines .av-form :is(input,select) { font-size:16px; }
 .admin-vaccines .av-actions button { min-height:44px; }
 }
 .admin-vaccines .av-statistics { grid-template-columns:repeat(3,minmax(0,1fr)); }
@@ -80,7 +83,9 @@
 .admin-vaccines .av-form textarea { width:100%; min-width:0; padding:12px; border:1px solid var(--cd-border); border-radius:8px; font:inherit; resize:vertical; }
 .admin-vaccines .av-modal-body > section { margin-top:24px; border-top:1px solid var(--cd-border); padding-top:20px; }
 .admin-vaccines .av-timeline { padding-left:24px; margin:0; }
-.admin-vaccines .av-timeline li { padding:10px 0; }
+.admin-vaccines .av-timeline li { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:10px 0; }
+.admin-vaccines .av-timeline li > div { min-width:0; }
+.admin-vaccines .av-timeline span { display:block; margin-top:4px; color:var(--cd-muted); font-size:11px; }
 .admin-vaccines .av-timeline p, .admin-vaccines .av-dose-list p { color:var(--cd-muted); font-size:12px; margin-top:5px; overflow-wrap:anywhere; white-space:pre-wrap; }
 .admin-vaccines .av-dose-list { list-style:none; padding:0; display:grid; gap:12px; margin:18px 0; }
 .admin-vaccines .av-dose-list li { padding:16px; border:1px solid var(--cd-border); border-radius:9px; }
@@ -88,8 +93,19 @@
 .admin-vaccines .av-dose-form { border-top:1px solid var(--cd-border); padding-top:20px; margin-top:20px; }
 .admin-vaccines .av-delete-confirm { background:#faf6ed; border-radius:8px; padding:16px; }
 .admin-vaccines .av-schedule-message { font-size:12px; color:var(--cd-blue); }
+.admin-vaccines .av-empty-schedule { margin:16px 0; color:var(--cd-muted); font-size:12px; }
+.admin-vaccines .av-modal-state { min-height:220px; display:grid; place-items:center; padding:24px; text-align:center; color:var(--cd-muted); }
+.admin-vaccines .av-request-error { color:#8a2929; }
+.admin-vaccines .av-request-error .cd-button { margin-top:16px; }
+.admin-vaccines .av-submit-error { margin:0 24px 18px; padding:12px 14px; border-radius:8px; background:#fff3f3; color:#8a2929; }
+.admin-vaccines .av-dose-form .av-submit-error { margin:0; }
+.admin-vaccines .av-success { margin:16px 0; padding:12px 14px; border-radius:8px; background:#eaf6ee; color:#26714c; }
+@media(max-width:1100px) { .admin-vaccines .av-filter-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:768px) {
 .admin-vaccines .av-statistics { grid-template-columns:minmax(0,1fr); }
 .admin-vaccines .av-form textarea { font-size:16px; }
 .admin-vaccines .av-dose-actions button { min-height:44px; }
+.admin-vaccines .av-filter-grid { grid-template-columns:minmax(0,1fr); }
+.admin-vaccines .av-timeline li { display:block; }
+.admin-vaccines .av-timeline li button { margin-top:8px; }
 }

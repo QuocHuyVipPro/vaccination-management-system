@@ -1,7 +1,7 @@
 from datetime import date, datetime, timedelta
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
@@ -17,6 +17,7 @@ from app.models.nguoi_dung import NguoiDung
 from app.models.phac_do_tiem import PhacDoTiem
 from app.models.vac_xin import VacXin
 from app.schemas.staff_vaccination import (
+    StaffAvailableBatchResponse,
     StaffVaccinationCreate,
     StaffVaccinationResponse,
 )
@@ -32,6 +33,32 @@ CurrentStaff = Annotated[
     NguoiDung,
     Depends(require_roles(ROLE_NHAN_VIEN)),
 ]
+
+
+@router.get(
+    "/available-batches",
+    response_model=list[StaffAvailableBatchResponse],
+)
+def list_available_batches(
+    _current_staff: CurrentStaff,
+    db: DatabaseSession,
+    ma_vac_xin: Annotated[int, Query(gt=0)],
+) -> list[LoVacXin]:
+    return list(
+        db.scalars(
+            select(LoVacXin)
+            .where(
+                LoVacXin.ma_vac_xin == ma_vac_xin,
+                LoVacXin.trang_thai == "DANG_SU_DUNG",
+                LoVacXin.han_su_dung >= date.today(),
+                LoVacXin.so_luong_con > 0,
+            )
+            .order_by(
+                LoVacXin.han_su_dung.asc(),
+                LoVacXin.ma_lo.asc(),
+            )
+        )
+    )
 
 
 @router.post(

@@ -71,7 +71,7 @@
 .admin-inventory .ai-form input { font-size:16px; }
 .admin-inventory .ai-actions button { min-height:44px; }
 }
-.admin-inventory .ai-filter-grid { grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr); }
+.admin-inventory .ai-filter-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
 .admin-inventory .ai-transaction-filters { grid-template-columns:minmax(0,2fr) minmax(0,1fr); }
 .admin-inventory .ai-table th:first-child { width:15%; }
 .admin-inventory .ai-table th:last-child { width:15%; }
@@ -88,6 +88,13 @@
 .admin-inventory .ai-positive { color:#26714c; }
 .admin-inventory .ai-negative { color:#6b6174; }
 .admin-inventory .ai-actions button:disabled { opacity:.5; cursor:not-allowed; }
+.admin-inventory .ai-filter-actions { display:flex; align-items:flex-end; gap:8px; }
+.admin-inventory .ai-success { margin:18px 0; padding:12px 16px; border-radius:8px; background:#eaf6ee; color:#26714c; }
+.admin-inventory .ai-request-error { color:#9b3838; }
+.admin-inventory .ai-request-error .cd-button { margin-top:14px; }
+.admin-inventory .ai-empty-inline { color:var(--cd-muted); padding:10px 0; }
+.admin-inventory .ai-compact { min-width:760px; }
+.admin-inventory .ai-modal .ai-table-card { overflow-x:auto; }
 @media(max-width:1100px) { .admin-inventory .ai-filter-grid { grid-template-columns:minmax(0,1fr); } }
 @media(max-width:768px) {
 .admin-inventory .ai-form :is(select,textarea) { font-size:16px; }

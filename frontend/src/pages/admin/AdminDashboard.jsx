@@ -49,8 +49,10 @@ export function AdminSidebar({ onNavigate, activePage = 'admin-dashboard' }) {
     <div id="admin-navigation" className={`cd-navigation${open ? ' cd-navigation-open' : ''}`}><p className="cd-nav-label">QUẢN TRỊ HỆ THỐNG</p><nav aria-label="Menu quản trị viên">{menu.map((item) => <button type="button" key={item.page} className={`cd-nav-item${activePage === item.page ? ' cd-nav-active' : ''}`} aria-current={activePage === item.page ? 'page' : undefined} onClick={() => { onNavigate?.(item.page); setOpen(false); }}><AdminIcon name={item.icon} /><span>{item.label}</span></button>)}</nav><div className="cd-sidebar-bottom"><button type="button" className="cd-nav-item" onClick={() => onNavigate?.('logout')}><Icon name="logout" /><span>Đăng xuất</span></button><p>TIÊM CHỦNG CARE<span>Quản lý hệ thống tiêm chủng</span></p></div></div>
   </aside>;
 }
-export function AdminHeader({ onNotifications }) {
-  return <header className="cd-header"><div className="cd-greeting"><p>Xin chào, <strong>Quản trị viên</strong></p><span>Tổng quan hoạt động của hệ thống</span></div><div className="cd-header-account"><button type="button" className="cd-notification-button" aria-label="Xem cảnh báo hệ thống" onClick={onNotifications}><Icon name="bell" /><span /></button><span className="cd-avatar">AD</span><div className="cd-account-name"><strong>Quản trị viên</strong><span>Quản trị viên</span></div></div></header>;
+export function AdminHeader({ onNotifications, currentUser }) {
+  const name = currentUser?.ho_ten || 'Quản trị viên';
+  const initials = name.trim().split(/\s+/).filter(Boolean).slice(-2).map((part) => part[0]).join('').toUpperCase();
+  return <header className="cd-header"><div className="cd-greeting"><p>Xin chào, <strong>{name}</strong></p><span>Tổng quan hoạt động của hệ thống</span></div><div className="cd-header-account"><button type="button" className="cd-notification-button" aria-label="Xem cảnh báo hệ thống" onClick={onNotifications}><Icon name="bell" /><span /></button><span className="cd-avatar">{initials}</span><div className="cd-account-name"><strong>{name}</strong><span>{currentUser?.vai_tro || 'QUAN_TRI_VIEN'}</span></div></div></header>;
 }
 export default function AdminDashboard({ onNavigate }) {
   const alertsRef = useRef(null);

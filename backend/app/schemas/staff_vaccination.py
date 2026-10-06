@@ -20,6 +20,18 @@ class StaffVaccinationCreate(BaseModel):
         return normalized_value or None
 
 
+class StaffAvailableBatchResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    ma_lo: int
+    ma_vac_xin: int
+    so_lo: str
+    ngay_san_xuat: date | None
+    han_su_dung: date
+    so_luong_con: int
+    trang_thai: str
+
+
 class StaffVaccinationResponse(BaseModel):
     ma_lich_su: int
     ma_ho_so: int

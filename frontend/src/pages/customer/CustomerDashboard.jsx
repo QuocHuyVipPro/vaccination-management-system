@@ -1,4 +1,8 @@
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { getAppointments } from '../../services/appointmentService.js';
+import { getNotifications } from '../../services/notificationService.js';
+import { getProfiles } from '../../services/profileService.js';
+import { getVaccinationHistory } from '../../services/vaccinationHistoryService.js';
 import { NotificationContext, unreadCount } from './notificationState';
 import './CustomerDashboard.css';
 
@@ -61,12 +65,54 @@ function Statistics({ items }) {
   return <section className="cd-statistics" aria-label="Thống kê tổng quan">{items.map((item) => <article className="cd-stat-card" key={item.label}><div className="cd-stat-top"><h2>{item.label}</h2><span className="cd-icon-box"><Icon name={item.icon} /></span></div><strong className="cd-stat-value">{item.value}</strong><p>{item.caption}</p></article>)}</section>;
 }
 
-function UpcomingAppointment({ appointment, onNavigate }) {
+const appointmentStatuses = {
+  CHO_XAC_NHAN: 'Chờ xác nhận',
+  DA_XAC_NHAN: 'Đã xác nhận',
+  HOAN_THANH: 'Hoàn thành',
+  DA_HUY: 'Đã hủy',
+};
+
+function userInitials(name) {
+  return (name || 'Khách hàng').trim().split(/\s+/).slice(-2).map((part) => part[0]).join('').toUpperCase();
+}
+
+function formatDate(value) {
+  if (!value) return 'Chưa xác định';
+  const [year, month, day] = value.split('-');
+  return year && month && day ? `${day}/${month}/${year}` : value;
+}
+
+function formatDateTime(value) {
+  if (!value) return 'Chưa xác định';
+  const [datePart, timePart = ''] = value.split(/[T ]/);
+  return `${formatDate(datePart)}${timePart ? ` · ${timePart.slice(0, 5)}` : ''}`;
+}
+
+function appointmentDateTime(appointment) {
+  const value = new Date(`${appointment.ngay_hen}T${appointment.gio_hen}`);
+  return Number.isNaN(value.getTime()) ? null : value;
+}
+
+function findUpcomingAppointment(appointments) {
+  const now = new Date();
+  return appointments
+    .filter((appointment) => ['CHO_XAC_NHAN', 'DA_XAC_NHAN'].includes(appointment.trang_thai))
+    .map((appointment) => ({ appointment, dateTime: appointmentDateTime(appointment) }))
+    .filter(({ dateTime }) => dateTime && dateTime >= now)
+    .sort((left, right) => left.dateTime - right.dateTime)[0]?.appointment || null;
+}
+
+function UpcomingAppointment({ appointment, profile, onNavigate }) {
+  if (!appointment) {
+    return <section className="cd-panel cd-appointment cd-empty-state" aria-labelledby="cd-appointment-title"><div className="cd-section-heading"><h2 id="cd-appointment-title">Lịch tiêm sắp tới</h2></div><span className="cd-icon-box"><Icon name="calendar" /></span><h3>Chưa có lịch hẹn sắp tới</h3><p>Các lịch đang chờ hoặc đã xác nhận sẽ xuất hiện tại đây.</p><button type="button" className="cd-button cd-button-primary" onClick={() => onNavigate?.('vaccine')}>Đăng ký lịch tiêm<Icon name="arrow" /></button></section>;
+  }
+  const [year, month, day] = appointment.ngay_hen.split('-');
+  const status = appointmentStatuses[appointment.trang_thai] || appointment.trang_thai || 'Chưa xác định';
   return (
     <section className="cd-panel cd-appointment" aria-labelledby="cd-appointment-title">
-      <div className="cd-section-heading"><h2 id="cd-appointment-title">Lịch tiêm sắp tới</h2><span className="cd-badge"><Icon name="check" />{appointment.status}</span></div>
-      <div className="cd-appointment-summary"><div className="cd-date-tile"><span>THÁNG 10</span><strong>08</strong><span>2026</span></div><div><p className="cd-eyebrow">LỊCH TIÊM CỦA BẠN</p><h3>{appointment.vaccine}</h3><p>{appointment.dose}<span className="cd-separator">•</span>{appointment.name}</p></div></div>
-      <dl className="cd-appointment-details"><div><dt><Icon name="calendar" />Ngày tiêm</dt><dd><time dateTime="2026-10-08">{appointment.date}</time></dd></div><div><dt><Icon name="clock" />Giờ hẹn</dt><dd><time dateTime="2026-10-08T09:30:00+07:00">{appointment.time}</time></dd></div></dl>
+      <div className="cd-section-heading"><h2 id="cd-appointment-title">Lịch tiêm sắp tới</h2><span className="cd-badge"><Icon name={appointment.trang_thai === 'DA_XAC_NHAN' ? 'check' : 'clock'} />{status}</span></div>
+      <div className="cd-appointment-summary"><div className="cd-date-tile"><span>THÁNG {month}</span><strong>{day}</strong><span>{year}</span></div><div><p className="cd-eyebrow">LỊCH TIÊM CỦA BẠN</p><h3>Lịch hẹn #{appointment.ma_lich_hen}</h3><p>{profile?.ho_ten || `Hồ sơ #${appointment.ma_ho_so}`}</p></div></div>
+      <dl className="cd-appointment-details"><div><dt><Icon name="calendar" />Ngày tiêm</dt><dd><time dateTime={appointment.ngay_hen}>{formatDate(appointment.ngay_hen)}</time></dd></div><div><dt><Icon name="clock" />Giờ hẹn</dt><dd><time dateTime={`${appointment.ngay_hen}T${appointment.gio_hen}`}>{appointment.gio_hen.slice(0, 5)}</time></dd></div></dl>
       <div className="cd-appointment-footer"><span><Icon name="shield" />Chủ động theo dõi lịch tiêm của bạn</span><button type="button" className="cd-button cd-button-primary" onClick={() => onNavigate?.('calendar')}>Xem chi tiết<Icon name="arrow" /></button></div>
     </section>
   );
@@ -76,7 +122,7 @@ function Profiles({ profiles, onNavigate }) {
   return (
     <section className="cd-panel" aria-labelledby="cd-profiles-title">
       <div className="cd-section-heading"><h2 id="cd-profiles-title">Hồ sơ người tiêm</h2><button type="button" className="cd-text-button" onClick={() => onNavigate?.('users')}><Icon name="plus" />Thêm hồ sơ</button></div>
-      <div className="cd-profile-grid">{profiles.map((profile) => <article className="cd-profile" key={profile.name}><div className="cd-profile-top"><span className="cd-avatar cd-profile-avatar">{profile.initials}</span><span className="cd-relation">{profile.relationship}</span></div><h3>{profile.name}</h3><p>Ngày sinh: <time dateTime={profile.birthDate}>{profile.birthday}</time></p><button type="button" className="cd-button cd-profile-button" onClick={() => onNavigate?.('users')}>Xem hồ sơ<Icon name="arrow" /></button></article>)}</div>
+      {profiles.length ? <div className="cd-profile-grid">{profiles.slice(0, 2).map((profile) => <article className="cd-profile" key={profile.ma_ho_so}><div className="cd-profile-top"><span className="cd-avatar cd-profile-avatar">{userInitials(profile.ho_ten)}</span><span className="cd-relation">{profile.moi_quan_he || 'Người tiêm'}</span></div><h3>{profile.ho_ten}</h3><p>Ngày sinh: <time dateTime={profile.ngay_sinh}>{formatDate(profile.ngay_sinh)}</time></p><button type="button" className="cd-button cd-profile-button" onClick={() => onNavigate?.('users')}>Xem hồ sơ<Icon name="arrow" /></button></article>)}</div> : <div className="cd-inline-empty"><p>Bạn chưa có hồ sơ người tiêm.</p><button type="button" className="cd-button" onClick={() => onNavigate?.('users')}>Thêm hồ sơ</button></div>}
     </section>
   );
 }
@@ -91,27 +137,69 @@ function QuickActions({ onNavigate }) {
 }
 
 function Notifications({ notifications, onNavigate, unread }) {
-  return <section className="cd-panel" aria-labelledby="cd-notifications-title"><div className="cd-section-heading"><h2 id="cd-notifications-title">Thông báo gần đây</h2><span className="cd-unread-count">{unread} mới</span></div><ul className="cd-notifications">{notifications.map((notification) => <li key={notification.title}><span className="cd-unread-dot" role="img" aria-label="Chưa đọc" /><div><h3>{notification.title}</h3><p>{notification.message}</p><span className="cd-notification-time">{notification.time}</span></div></li>)}</ul><button type="button" className="cd-text-button cd-all-notifications" onClick={() => onNavigate?.('bell')}>Xem tất cả<Icon name="arrow" /></button></section>;
+  return <section className="cd-panel" aria-labelledby="cd-notifications-title"><div className="cd-section-heading"><h2 id="cd-notifications-title">Thông báo gần đây</h2><span className="cd-unread-count">{unread} mới</span></div>{notifications.length ? <ul className="cd-notifications">{notifications.map((notification) => <li key={notification.ma_thong_bao}>{notification.da_doc ? <span className="cd-read-placeholder" /> : <span className="cd-unread-dot" role="img" aria-label="Chưa đọc" />}<div><h3>{notification.tieu_de}</h3><p>{notification.noi_dung}</p><time className="cd-notification-time" dateTime={notification.ngay_tao}>{formatDateTime(notification.ngay_tao)}</time></div></li>)}</ul> : <div className="cd-inline-empty"><p>Chưa có thông báo.</p></div>}<button type="button" className="cd-text-button cd-all-notifications" onClick={() => onNavigate?.('bell')}>Xem tất cả<Icon name="arrow" /></button></section>;
 }
 
-export default function CustomerDashboard({ onNavigate }) {
-  const { notifications: sharedNotifications } = useContext(NotificationContext);
-  const customer = { name: 'Nguyễn Văn An', initials: 'NA' };
+function SectionError({ message }) {
+  return <section className="cd-panel cd-section-error" role="alert"><p>{message}</p></section>;
+}
+
+function SectionLoading({ label }) {
+  return <section className="cd-panel cd-section-loading" role="status">Đang tải {label}...</section>;
+}
+
+export default function CustomerDashboard({ currentUser, onNavigate }) {
+  const { notifications: sharedNotifications, setNotifications } = useContext(NotificationContext);
+  const [data, setData] = useState({ profiles: null, appointments: null, history: null, notifications: null });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(true);
+  const requestRef = useRef(0);
+
+  const loadDashboard = useCallback(async () => {
+    const requestId = requestRef.current + 1;
+    requestRef.current = requestId;
+    await Promise.resolve();
+    if (requestId !== requestRef.current) return;
+    setLoading(true);
+    setErrors({});
+    const results = await Promise.allSettled([
+      getProfiles(), getAppointments(), getVaccinationHistory(), getNotifications(),
+    ]);
+    if (requestId !== requestRef.current) return;
+    const keys = ['profiles', 'appointments', 'history', 'notifications'];
+    const nextData = {};
+    const nextErrors = {};
+    results.forEach((result, index) => {
+      const key = keys[index];
+      if (result.status === 'fulfilled') nextData[key] = Array.isArray(result.value) ? result.value : [];
+      else {
+        nextData[key] = null;
+        nextErrors[key] = result.reason?.message || 'Không thể tải dữ liệu.';
+      }
+    });
+    setData(nextData);
+    setErrors(nextErrors);
+    if (nextData.notifications) setNotifications(nextData.notifications);
+    setLoading(false);
+  }, [setNotifications]);
+
+  useEffect(() => {
+    loadDashboard();
+    return () => { requestRef.current += 1; };
+  }, [loadDashboard]);
+
+  const customerName = currentUser?.ho_ten || 'Khách hàng';
+  const customer = { name: customerName, initials: userInitials(customerName) };
+  const upcoming = data.appointments ? findUpcomingAppointment(data.appointments) : null;
+  const upcomingProfile = upcoming && data.profiles?.find((profile) => profile.ma_ho_so === upcoming.ma_ho_so);
+  const notifications = data.notifications === null ? null : [...sharedNotifications].sort((left, right) => String(right.ngay_tao).localeCompare(String(left.ngay_tao))).slice(0, 3);
   const statistics = [
-    { label: 'Hồ sơ người tiêm', value: 2, caption: 'Đang quản lý', icon: 'users' },
-    { label: 'Lịch hẹn sắp tới', value: 1, caption: 'Trong 7 ngày tới', icon: 'calendar' },
-    { label: 'Mũi đã tiêm', value: 6, caption: 'Đã hoàn thành', icon: 'vaccine' },
-    { label: 'Thông báo mới', value: unreadCount(sharedNotifications), caption: 'Chưa đọc', icon: 'bell' },
+    { label: 'Hồ sơ người tiêm', value: data.profiles?.length ?? '—', caption: errors.profiles ? 'Không thể tải' : 'Đang quản lý', icon: 'users' },
+    { label: 'Lịch hẹn', value: data.appointments?.length ?? '—', caption: errors.appointments ? 'Không thể tải' : 'Tổng lịch đã đăng ký', icon: 'calendar' },
+    { label: 'Mũi đã tiêm', value: data.history?.length ?? '—', caption: errors.history ? 'Không thể tải' : 'Đã hoàn thành', icon: 'vaccine' },
+    { label: 'Thông báo mới', value: data.notifications === null ? '—' : unreadCount(sharedNotifications), caption: errors.notifications ? 'Không thể tải' : 'Chưa đọc', icon: 'bell' },
   ];
-  const appointment = { name: 'Nguyễn Minh Anh', vaccine: 'Vắc xin HPV', dose: 'Mũi 2', date: '08/10/2026', time: '09:30', status: 'Đã xác nhận' };
-  const profiles = [
-    { name: 'Nguyễn Văn An', initials: 'NA', birthday: '15/06/2005', birthDate: '2005-06-15', relationship: 'Bản thân' },
-    { name: 'Nguyễn Minh Anh', initials: 'MA', birthday: '12/03/2015', birthDate: '2015-03-12', relationship: 'Em' },
-  ];
-  const notifications = [
-    { title: 'Nhắc lịch tiêm', message: 'Bạn có lịch tiêm HPV mũi 2 vào ngày 08/10/2026 lúc 09:30.', time: '2 giờ trước' },
-    { title: 'Lịch hẹn đã được xác nhận', message: 'Lịch tiêm của Nguyễn Minh Anh đã được xác nhận.', time: 'Hôm qua' },
-  ];
+  const failedCount = Object.keys(errors).length;
 
   return (
     <div className="customer-dashboard">
@@ -121,8 +209,10 @@ export default function CustomerDashboard({ onNavigate }) {
         <DashboardHeader customer={customer} />
         <main id="cd-main" className="cd-main" tabIndex={-1}>
           <div className="cd-page-heading"><h1>Tổng quan</h1><p>Theo dõi lịch tiêm và quản lý sức khỏe của bạn</p></div>
+          {loading && data.profiles === null && <div className="cd-dashboard-loading" role="status">Đang tải dữ liệu tổng quan...</div>}
+          {!loading && failedCount > 0 && <div className={`cd-dashboard-error${failedCount === 4 ? ' cd-dashboard-error-all' : ''}`} role="alert"><span>{failedCount === 4 ? 'Không thể tải dữ liệu Dashboard.' : 'Một số dữ liệu chưa thể tải đầy đủ.'}</span><button type="button" className="cd-button" onClick={loadDashboard}>Thử lại</button></div>}
           <Statistics items={statistics} />
-          <div className="cd-content-grid"><div className="cd-content-column"><UpcomingAppointment appointment={appointment} onNavigate={onNavigate} /><Profiles profiles={profiles} onNavigate={onNavigate} /></div><div className="cd-content-column"><QuickActions onNavigate={onNavigate} /><Notifications notifications={notifications} onNavigate={onNavigate} unread={unreadCount(sharedNotifications)} /></div></div>
+          <div className="cd-content-grid"><div className="cd-content-column">{data.appointments === null && loading ? <SectionLoading label="lịch hẹn" /> : errors.appointments ? <SectionError message={errors.appointments} /> : <UpcomingAppointment appointment={upcoming} profile={upcomingProfile} onNavigate={onNavigate} />}{data.profiles === null && loading ? <SectionLoading label="hồ sơ" /> : errors.profiles ? <SectionError message={errors.profiles} /> : <Profiles profiles={data.profiles || []} onNavigate={onNavigate} />}</div><div className="cd-content-column"><QuickActions onNavigate={onNavigate} />{data.notifications === null && loading ? <SectionLoading label="thông báo" /> : errors.notifications ? <SectionError message={errors.notifications} /> : <Notifications notifications={notifications || []} onNavigate={onNavigate} unread={unreadCount(sharedNotifications)} />}</div></div>
           <footer className="cd-footer"><Icon name="shield" />An toàn · Chủ động · Vì sức khỏe cộng đồng</footer>
         </main>
       </div>

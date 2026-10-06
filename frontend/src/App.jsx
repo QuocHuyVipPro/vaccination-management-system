@@ -18,11 +18,7 @@ import AdminUsers from './pages/admin/AdminUsers';
 import AdminVaccines from './pages/admin/AdminVaccines';
 import AdminInventory from './pages/admin/AdminInventory';
 import AdminReports from './pages/admin/AdminReports';
-import { initialVaccines } from './pages/admin/adminVaccineData';
-import { initialInventory } from './pages/admin/inventoryState';
-import { initialVaccinationState, completeVaccination } from './pages/staff/vaccinationState';
 import { AUTH_ROLES, clearSession, restoreSession } from './services/authService';
-import { getNotifications } from './services/notificationService';
 
 
 const roleHomePages = {
@@ -50,11 +46,7 @@ function App() {
   const [loginNotice, setLoginNotice] = useState('');
   const [registeredEmail, setRegisteredEmail] = useState('');
 
-  const [adminUsers, setAdminUsers] = useState(null);
-  const [adminVaccines, setAdminVaccines] = useState(null);
-  const [inventory, setInventory] = useState(initialInventory);
   const [notifications, setNotifications] = useState(initialNotifications);
-  const [staffState, setStaffState] = useState(initialVaccinationState);
   const [staffEntry, setStaffEntry] = useState({ key: 0 });
 
   useEffect(() => {
@@ -75,15 +67,6 @@ function App() {
       });
     return () => { active = false; };
   }, []);
-
-  useEffect(() => {
-    if (currentUser?.vai_tro !== AUTH_ROLES.CUSTOMER) return undefined;
-    let active = true;
-    getNotifications()
-      .then((data) => { if (active) setNotifications(Array.isArray(data) ? data : []); })
-      .catch(() => {});
-    return () => { active = false; };
-  }, [currentUser?.ma_nguoi_dung, currentUser?.vai_tro]);
 
   const handleLogin = (user) => {
     const homePage = roleHomePages[user?.vai_tro];
@@ -128,10 +111,6 @@ function App() {
   };
 
   const navigateAdmin = (page) => navigateForRole(page);
-  const setStaffAppointments = (update) => setStaffState((current) => ({
-    ...current,
-    appointments: typeof update === 'function' ? update(current.appointments) : update,
-  }));
   const navigateStaff = (page, payload) => {
     if (page === 'logout') {
       handleLogout();
@@ -180,21 +159,21 @@ function App() {
 
   return <NotificationContext.Provider value={{ notifications, setNotifications, onOpenNotifications: () => navigateForRole('notifications') }}>
     {allowedPage === 'admin-dashboard' && <AdminDashboard onNavigate={navigateAdmin} />}
-    {allowedPage === 'admin-users' && <AdminUsers onNavigate={navigateAdmin} users={adminUsers} setUsers={setAdminUsers} />}
-    {allowedPage === 'admin-vaccines' && <AdminVaccines onNavigate={navigateAdmin} vaccines={adminVaccines} setVaccines={setAdminVaccines} />}
-    {allowedPage === 'admin-inventory' && <AdminInventory onNavigate={navigateAdmin} vaccines={adminVaccines ?? initialVaccines} inventory={inventory} setInventory={setInventory} />}
-    {allowedPage === 'admin-reports' && <AdminReports onNavigate={navigateAdmin} />}
-    {allowedPage === 'staff-dashboard' && <StaffDashboard onNavigate={navigateStaff} />}
-    {allowedPage === 'staff-patients' && <StaffPatients onNavigate={navigateStaff} />}
-    {allowedPage === 'staff-history' && <StaffHistory key={staffEntry.key} patientId={staffEntry.patientId} records={staffState.records} onNavigate={navigateStaff} />}
-    {allowedPage === 'staff-appointments' && <StaffAppointments onNavigate={navigateStaff} appointments={staffState.appointments} setAppointments={setStaffAppointments} />}
-    {allowedPage === 'staff-vaccination' && <StaffVaccination key={staffEntry.key} entry={staffEntry} state={staffState} onComplete={(draft) => setStaffState((current) => completeVaccination(current, draft))} onNavigate={navigateStaff} />}
+    {allowedPage === 'admin-users' && <AdminUsers currentUser={currentUser} onNavigate={navigateAdmin} />}
+    {allowedPage === 'admin-vaccines' && <AdminVaccines currentUser={currentUser} onNavigate={navigateAdmin} />}
+    {allowedPage === 'admin-inventory' && <AdminInventory currentUser={currentUser} onNavigate={navigateAdmin} />}
+    {allowedPage === 'admin-reports' && <AdminReports currentUser={currentUser} onNavigate={navigateAdmin} />}
+    {allowedPage === 'staff-dashboard' && <StaffDashboard currentUser={currentUser} onNavigate={navigateStaff} />}
+    {allowedPage === 'staff-patients' && <StaffPatients currentUser={currentUser} onNavigate={navigateStaff} />}
+    {allowedPage === 'staff-history' && <StaffHistory key={staffEntry.key} currentUser={currentUser} patientId={staffEntry.patientId} onNavigate={navigateStaff} />}
+    {allowedPage === 'staff-appointments' && <StaffAppointments currentUser={currentUser} onNavigate={navigateStaff} />}
+    {allowedPage === 'staff-vaccination' && <StaffVaccination key={staffEntry.key} currentUser={currentUser} entry={staffEntry} onNavigate={navigateStaff} />}
     {allowedPage === 'notifications' && <Notifications currentUser={currentUser} onNavigate={navigateCustomer} />}
     {allowedPage === 'history' && <VaccinationHistory currentUser={currentUser} onNavigate={navigateCustomer} />}
     {allowedPage === 'appointments' && <Appointments currentUser={currentUser} onNavigate={navigateCustomer} onRegister={() => navigateForRole('registration')} />}
     {allowedPage === 'registration' && <VaccinationRegistration currentUser={currentUser} onNavigate={navigateCustomer} onOverview={() => navigateForRole('dashboard')} />}
     {allowedPage === 'profiles' && <PatientProfiles currentUser={currentUser} onNavigate={navigateCustomer} />}
-    {allowedPage === 'dashboard' && <CustomerDashboard onNavigate={navigateCustomer} />}
+    {allowedPage === 'dashboard' && <CustomerDashboard currentUser={currentUser} onNavigate={navigateCustomer} />}
   </NotificationContext.Provider>;
 }
 
