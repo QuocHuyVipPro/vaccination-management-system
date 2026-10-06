@@ -24,6 +24,19 @@
 .vaccination-registration .vr-vaccine-info { color: var(--cd-muted); font-size: 12px; }
 .vaccination-registration .vr-price { display: block; margin-top: 7px; color: var(--cd-blue); font-weight: 700; }
 .vaccination-registration .vr-unavailable { background: #eceef2; color: #69798d; }
+.vaccination-registration .vr-api-state { padding: 18px; border: 1px solid var(--cd-border); border-radius: 10px; color: var(--cd-muted); background: #f8fafc; }
+.vaccination-registration .vr-api-error { color: #9b2c2c; background: #fff7f7; }
+.vaccination-registration .vr-api-error p { margin: 0 0 12px; }
+.vaccination-registration .vr-vaccine-schedule { margin-top: 24px; padding: 20px; border: 1px solid var(--cd-border); border-radius: 12px; background: #f8fafc; }
+.vaccination-registration .vr-vaccine-schedule h3 { margin: 0 0 14px; font-size: 16px; }
+.vaccination-registration .vr-schedule-list { display: grid; gap: 12px; }
+.vaccination-registration .vr-dose { display: flex; width: 100%; gap: 12px; align-items: flex-start; padding: 14px; border: 1px solid var(--cd-border); border-radius: 9px; background: #fff; color: var(--cd-navy); text-align: left; }
+.vaccination-registration .vr-dose:hover { border-color: #91b4e0; }
+.vaccination-registration .vr-dose-selected { border-color: var(--cd-blue); background: #f0f6ff; box-shadow: 0 0 0 1px var(--cd-blue); }
+.vaccination-registration .vr-dose > span:first-child { display: grid; place-items: center; flex: 0 0 30px; height: 30px; border-radius: 50%; background: var(--cd-blue); color: #fff; font-weight: 700; }
+.vaccination-registration .vr-dose > div { flex: 1; }
+.vaccination-registration .vr-schedule-list p { margin: 4px 0 0; color: var(--cd-muted); font-size: 12px; }
+.vaccination-registration .vr-submit-error { margin-top: 20px; padding: 14px; border-radius: 8px; background: #fff1f1; color: #9b2c2c; font-size: 13px; }
 .vaccination-registration .vr-search-label { display: block; font-size: 12px; margin-bottom: 6px; color: var(--cd-muted); }
 .vaccination-registration .vr-input { display: block; width: 100%; min-width: 0; padding: 11px 13px; border: 1px solid var(--cd-border); border-radius: 8px; background: #fff; color: var(--cd-navy); font: inherit; }
 .vaccination-registration .vr-input:focus { outline: none; border-color: var(--cd-blue); box-shadow: 0 0 0 3px #1a5fb41a; }

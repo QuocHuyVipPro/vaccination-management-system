@@ -13,6 +13,12 @@ const fieldLabels = {
   di_ung: 'Dị ứng',
   ghi_chu_suc_khoe: 'Ghi chú sức khỏe',
   mat_khau: 'Mật khẩu',
+  ma_ho_so: 'Hồ sơ người tiêm',
+  ngay_hen: 'Ngày hẹn',
+  gio_hen: 'Giờ hẹn',
+  items: 'Danh sách mũi tiêm',
+  ma_vac_xin: 'Vắc xin',
+  so_thu_tu_mui: 'Mũi tiêm',
 };
 
 function validationMessage(items) {
