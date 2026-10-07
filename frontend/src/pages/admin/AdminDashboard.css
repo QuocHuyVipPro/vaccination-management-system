@@ -1,4 +1,15 @@
 /* Reuse the existing dashboard shell; additions are scoped to Admin. */
+.admin-dashboard .ad-statistics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.admin-dashboard .ad-state { padding: 48px 24px; text-align: center; }
+.admin-dashboard .ad-state h2 { font-size: 19px; }
+.admin-dashboard .ad-state p { margin: 10px 0 18px; color: var(--cd-muted); }
+.admin-dashboard .ad-request-error h2, .admin-dashboard .ad-request-error p { color: #a54f50; }
+.admin-dashboard .ad-today { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.admin-dashboard .ad-today > div { padding: 22px 18px; border: 1px solid var(--cd-border); border-radius: 10px; background: #f7f9fc; }
+.admin-dashboard .ad-today dt { color: var(--cd-muted); font-size: 12px; }
+.admin-dashboard .ad-today dd { display: flex; align-items: baseline; gap: 8px; margin-top: 10px; }
+.admin-dashboard .ad-today strong { font-size: 30px; }
+.admin-dashboard .ad-today span { color: var(--cd-muted); font-size: 11px; }
 .admin-dashboard .ad-inventory { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .admin-dashboard .ad-inventory > div { padding: 18px 14px; background: #f7f9fc; border: 1px solid var(--cd-border); border-radius: 10px; }
 .admin-dashboard .ad-inventory dt { color: var(--cd-muted); font-size: 12px; }
@@ -16,6 +27,7 @@
 .admin-dashboard .ad-expiry { background: #faf3e5; color: #896c37; }
 .admin-dashboard .ad-stock { background: #f0f2f5; color: #627084; }
 .admin-dashboard .ad-pending { background: #edf3fb; color: #37659b; }
+.admin-dashboard .ad-normal { background: #eaf6ee; color: #26714c; }
 .admin-dashboard .ad-alert-panel:focus { outline: 2px solid #74a9eb; outline-offset: 3px; }
 .admin-dashboard .ad-activities { display: grid; gap: 24px; }
 .admin-dashboard .ad-activities li { display: grid; grid-template-columns: 40px 30px minmax(0, 1fr); gap: 12px; align-items: start; }
@@ -26,6 +38,7 @@
 .admin-dashboard .ad-activities strong { font-size: 13px; font-weight: 600; }
 .admin-dashboard .ad-activities p { font-size: 12px; color: var(--cd-muted); margin-top: 4px; overflow-wrap: anywhere; }
 @media (max-width: 768px) {
+  .admin-dashboard .ad-statistics, .admin-dashboard .ad-today { grid-template-columns: minmax(0, 1fr); }
   .admin-dashboard .ad-inventory { grid-template-columns: minmax(0, 1fr); }
   .admin-dashboard .ad-inventory > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .admin-dashboard .ad-inventory dd { margin-top: 0; }

@@ -158,7 +158,7 @@ function App() {
     : roleHomePages[currentUser.vai_tro];
 
   return <NotificationContext.Provider value={{ notifications, setNotifications, onOpenNotifications: () => navigateForRole('notifications') }}>
-    {allowedPage === 'admin-dashboard' && <AdminDashboard onNavigate={navigateAdmin} />}
+    {allowedPage === 'admin-dashboard' && <AdminDashboard currentUser={currentUser} onNavigate={navigateAdmin} />}
     {allowedPage === 'admin-users' && <AdminUsers currentUser={currentUser} onNavigate={navigateAdmin} />}
     {allowedPage === 'admin-vaccines' && <AdminVaccines currentUser={currentUser} onNavigate={navigateAdmin} />}
     {allowedPage === 'admin-inventory' && <AdminInventory currentUser={currentUser} onNavigate={navigateAdmin} />}
