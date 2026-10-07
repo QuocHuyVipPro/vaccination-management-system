@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import LandingPage from './pages/public/LandingPage';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import PatientProfiles from './pages/customer/PatientProfiles';
@@ -40,7 +41,7 @@ const rolePages = {
 };
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('login');
+  const [currentPage, setCurrentPage] = useState('landing');
   const [currentUser, setCurrentUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [loginNotice, setLoginNotice] = useState('');
@@ -59,7 +60,7 @@ function App() {
           setCurrentPage(roleHomePages[user.vai_tro]);
         } else {
           setCurrentUser(null);
-          setCurrentPage('login');
+          setCurrentPage('landing');
         }
       })
       .finally(() => {
@@ -140,6 +141,15 @@ function App() {
   }
 
   if (!currentUser) {
+    if (currentPage === 'landing') {
+      return (
+        <LandingPage
+          onLogin={() => { setLoginNotice(''); setRegisteredEmail(''); setCurrentPage('login'); }}
+          onRegister={() => { setLoginNotice(''); setRegisteredEmail(''); setCurrentPage('register'); }}
+          onVaccinationCta={() => { setLoginNotice(''); setRegisteredEmail(''); setCurrentPage('login'); }}
+        />
+      );
+    }
     if (currentPage === 'register') {
       return <Register onLogin={() => setCurrentPage('login')} onRegistered={handleRegistered} />;
     }
