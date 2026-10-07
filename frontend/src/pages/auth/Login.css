@@ -53,17 +53,8 @@
 .login-page .login-input-wrapper:focus-within .login-input-icon { color: var(--login-blue); }
 .login-page .login-password-toggle { position: absolute; right: 4px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 7px; background: transparent; color: var(--login-muted); transition: background .2s ease, color .2s ease; }
 .login-page .login-password-toggle:hover { background: #edf3fb; color: var(--login-blue); }
-.login-page .login-form-options { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.login-page .login-checkbox-label { position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 24px; cursor: pointer; }
-.login-page .login-checkbox-input { position: absolute; width: 16px; height: 16px; margin: 0; opacity: 0; }
-.login-page .login-checkbox-custom { display: grid; place-items: center; width: 16px; height: 16px; border: 1px solid #b7cce7; border-radius: 4px; background: white; flex-shrink: 0; }
-.login-page .login-checkbox-input:checked + .login-checkbox-custom { border-color: var(--login-blue); background: var(--login-blue); }
-.login-page .login-checkbox-input:checked + .login-checkbox-custom::after { content: ''; width: 8px; height: 5px; border-left: 2px solid white; border-bottom: 2px solid white; transform: translateY(-1px) rotate(-45deg); }
-.login-page .login-checkbox-input:focus-visible + .login-checkbox-custom { outline: 3px solid #74a9eb; outline-offset: 3px; }
-.login-page .login-checkbox-text { color: var(--login-muted); font-size: 12px; }
-.login-page :is(.login-forgot-link, .login-register-link) { padding: 0; border: 0; background: transparent; color: var(--login-blue); font-size: 12px; font-weight: 600; }
-.login-page :is(.login-forgot-link, .login-register-link):hover { color: #1450a3; text-decoration: underline; }
-.login-page .login-forgot-link { flex-shrink: 0; }
+.login-page .login-register-link { padding: 0; border: 0; background: transparent; color: var(--login-blue); font-size: 12px; font-weight: 600; }
+.login-page .login-register-link:hover { color: #1450a3; text-decoration: underline; }
 .login-page .login-submit { width: 100%; height: 48px; border: 1px solid var(--login-blue); border-radius: 8px; background: var(--login-blue); color: white; font-size: 14px; font-weight: 650; transition: background .2s ease, box-shadow .2s ease; }
 .login-page .login-submit:hover { background: #1450a3; box-shadow: 0 3px 12px rgb(26 95 180 / 15%); }
 .login-page .login-submit:active { box-shadow: none; }
@@ -82,15 +73,23 @@
   .login-page { padding: 32px; }
 }
 @media (max-width: 768px) {
-  .login-page { justify-content: center; padding: 24px 0; background-position: 60% center; }
-  .login-page .login-card { width: calc(100% - 32px); max-width: 420px; padding: 32px 24px; }
-  .login-page .login-overlay { background: rgb(13 43 85 / 8%); }
+  .login-page {
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 24px 16px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #f3f6fa;
+    background-image: none !important;
+  }
+  .login-page .login-card { width: min(100%, 420px); max-width: 100%; padding: 32px 24px; flex: 0 0 auto; }
+  .login-page .login-overlay { display: none; }
   .login-page .login-form-input { font-size: 16px; }
 }
 @media (max-width: 360px) {
   .login-page .login-card { padding: 28px 18px; }
-  .login-page .login-checkbox-label { gap: 6px; }
-  .login-page :is(.login-checkbox-text, .login-forgot-link) { font-size: 11px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .login-page :is(button, input) { transition: none; }

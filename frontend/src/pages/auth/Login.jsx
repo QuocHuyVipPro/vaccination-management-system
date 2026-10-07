@@ -7,7 +7,6 @@ function Login({ onRegister, onLogin, initialEmail = '', successMessage = '' }) 
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -17,7 +16,7 @@ function Login({ onRegister, onLogin, initialEmail = '', successMessage = '' }) 
     setError('');
     setSubmitting(true);
     try {
-      const user = await login(email, password, rememberMe);
+      const user = await login(email, password, false);
       onLogin?.(user);
     } catch (requestError) {
       setError(requestError.message || 'Không thể đăng nhập. Vui lòng thử lại.');
@@ -124,23 +123,6 @@ function Login({ onRegister, onLogin, initialEmail = '', successMessage = '' }) 
                 )}
               </button>
             </div>
-          </div>
-
-          {/* Ghi nhớ + Quên mật khẩu */}
-          <div className="login-form-options">
-            <label className="login-checkbox-label">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="login-checkbox-input"
-              />
-              <span className="login-checkbox-custom" aria-hidden="true" />
-              <span className="login-checkbox-text">Ghi nhớ đăng nhập</span>
-            </label>
-            <button type="button" className="login-forgot-link">
-              Quên mật khẩu?
-            </button>
           </div>
 
           {/* Nút đăng nhập */}
