@@ -8,6 +8,10 @@ from app.models.nguoi_dung import NguoiDung
 from app.models.thong_bao import ThongBao
 from app.services import email_service
 from app.services.email_service import EmailConfigurationError
+from app.services.email_template_service import (
+    EmailContent,
+    render_generic_notification_email,
+)
 
 
 class EmailDeliveryError(RuntimeError):
@@ -31,6 +35,8 @@ def _safe_error_message(exc: Exception) -> str:
 def send_notification_email(
     db: Session,
     notification: ThongBao,
+    *,
+    email_content: EmailContent | None = None,
 ) -> LichSuGuiThongBao:
     owner = db.get(NguoiDung, notification.ma_nguoi_dung)
     recipient = (
@@ -43,10 +49,15 @@ def send_notification_email(
     try:
         if recipient == "KHONG_XAC_DINH":
             raise ValueError("Missing recipient email")
+        content = email_content or render_generic_notification_email(
+            notification.tieu_de,
+            notification.noi_dung,
+        )
         email_service.send_email(
             to_email=recipient,
             subject=notification.tieu_de,
-            body=notification.noi_dung,
+            body=content.plain_text,
+            html_body=content.html,
         )
     except Exception as exc:
         delivery_error = exc

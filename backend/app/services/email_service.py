@@ -57,7 +57,12 @@ def _validate_smtp_config() -> None:
         )
 
 
-def send_email(to_email: str, subject: str, body: str) -> None:
+def send_email(
+    to_email: str,
+    subject: str,
+    body: str,
+    html_body: str | None = None,
+) -> None:
     _validate_smtp_config()
     port = _smtp_port()
     use_tls = _use_tls()
@@ -67,6 +72,8 @@ def send_email(to_email: str, subject: str, body: str) -> None:
     message["To"] = to_email
     message["Subject"] = subject
     message.set_content(body, charset="utf-8")
+    if html_body is not None:
+        message.add_alternative(html_body, subtype="html", charset="utf-8")
 
     with smtplib.SMTP(SMTP_HOST, port, timeout=30) as smtp:
         if use_tls:

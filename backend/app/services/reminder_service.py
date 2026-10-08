@@ -13,6 +13,10 @@ from app.models.lich_su_tiem import LichSuTiem
 from app.models.nguoi_dung import NguoiDung
 from app.models.thong_bao import ThongBao
 from app.models.vac_xin import VacXin
+from app.services.email_template_service import (
+    ReminderEmailData,
+    render_reminder_email,
+)
 from app.services.notification_delivery_service import (
     EmailDeliveryError,
     send_notification_email,
@@ -41,6 +45,7 @@ class DueReminder:
     scheduled_at: datetime
     reminder_key: str
     eligible: bool
+    email_data: ReminderEmailData
 
 
 def _appointment_reminders(
@@ -91,6 +96,12 @@ def _appointment_reminders(
                     appointment.trang_thai == "DA_XAC_NHAN"
                     and user.trang_thai
                     and current_time < scheduled_at <= horizon
+                ),
+                email_data=ReminderEmailData(
+                    notification_type="LICH_TIEM",
+                    recipient_name=profile.ho_ten,
+                    scheduled_date=appointment.ngay_hen,
+                    scheduled_time=appointment.gio_hen,
                 ),
             )
         )
@@ -148,6 +159,12 @@ def _next_dose_reminders(
                     user.trang_thai
                     and current_time < scheduled_at <= horizon
                 ),
+                email_data=ReminderEmailData(
+                    notification_type="MUI_TIEP_THEO",
+                    recipient_name=profile.ho_ten,
+                    scheduled_date=history.ngay_du_kien_mui_tiep,
+                    vaccine_name=vaccine.ten_vac_xin,
+                ),
             )
         )
     return reminders
@@ -201,7 +218,11 @@ def _process_one_reminder(
         return created, "skipped"
 
     try:
-        send_notification_email(db, notification)
+        send_notification_email(
+            db,
+            notification,
+            email_content=render_reminder_email(reminder.email_data),
+        )
     except EmailDeliveryError:
         return created, "failed"
     return created, "sent"
